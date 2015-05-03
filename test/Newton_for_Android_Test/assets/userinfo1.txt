@@ -1,0 +1,25 @@
+{
+    "userName": "biaozhu1",
+    "nickName": "游",
+    "phone": "15656059397",
+    "gender": 3,
+    "email": null,
+    "avatar": "http://auth.datatang.com/Avatar/96F16894-5D6D-481A-A420-E174AD2216F4.jpg",
+    "personId": 4,
+    "location": "本溪",
+    "level": {
+        "score": 52,
+        "levelName": "武林新丁",
+        "next_levelName": "江湖小虾",
+        "next_nextLevelScore": 48
+    },
+    "cardInfo": {
+        "alipayNumber": "792793182@qq.com",
+        "idCardNumber": "411302198807157512",
+        "realName": "王龙喜牛想你想你想你想你想你徐娜"
+    },
+    "errorCode": "0",
+    "description": "biaozhu1获取个人信息成功",
+    "errorUri": null,
+    "hasError": false
+}

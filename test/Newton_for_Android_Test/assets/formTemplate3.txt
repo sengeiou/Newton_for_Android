@@ -1,0 +1,40 @@
+{
+    "id": "firstTemplate",
+    "name": "FormTemplate",
+    "title": "人脸采集",
+    "subTitle": "请您输入被拍人的相关信息",
+    "widgets": [
+        {
+            "name": "WEditText",
+            "hint": "请输入年龄",
+            "title": "年龄",
+            "key": "age",
+            "checker": [
+                {
+                    "priority": 1,
+                    "relationship": "&&",
+                    "name": "AgeChecker",
+                    "regex": "[0-9]{2}",
+                    "failText": "不是年龄"
+                }
+            ]
+        },
+        {
+            "name": "WRadioGroup",
+            "values": "男|女",
+            "defaultValue": "男",
+            "title": "性别",
+            "key": "gender"
+        }
+    ],
+    "actions": [
+        {
+            "text": "上一步",
+            "startPageId": "firstPage"
+        },
+        {
+            "text": "下一步",
+            "startPageId": "secondPage"
+        }
+    ]
+}

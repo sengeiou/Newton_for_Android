@@ -1,0 +1,32 @@
+{
+    "taskInfo": {
+        "id": 1228,
+        "templateType": 2,
+        "title": "不同配饰头像拍照我付钱，小费轻松赚",
+        "endTime": "2015-01-17T00:00:00",
+        "image": "635501221676287062.png",
+        "price": 0.4,
+        "participants": 1,
+        "taskIntegral": 5,
+        "tryEnable": false,
+        "isClaim": false,
+        "intro": "<p><br></p><p><strong>任务概述：</strong></p><p>使用手机自拍头像，并将头像上传给我们，我们就给你付钱。本任务每个人拍1-8张，0.4元/张，全部合格可赚取3.2元。</p><p>&nbsp;</p><p><strong>任务要求：</strong></p><p>使用安卓手机的摄像头进行拍摄，<span style=\"color: rgb(255, 0, 0);\" data-mce-style=\"color: #ff0000;\"><strong>要求每张头像要有变化：可以通改变头上的配置（眼镜、帽子、发夹、耳坠、围巾等）及发型变化来完成</strong></span>，拍摄时要求整个头像在屏幕内，五官清晰，在不同背景下，累计拍摄8张。</p><p>&nbsp;</p><p><strong>拍摄要点：</strong></p><ol><li>自拍时，保持<strong>眼睛平视</strong>，请调整前置摄像头与眼睛齐平，眼睛看向摄像头为最佳，不要抬头或低头拍摄；</li><li>在屏幕中，头部高度应该占据屏幕高度的50%左右，保持头部位于屏幕正中，不宜过大或过小；</li><li>拍摄时，在对焦后：不要眨眼（避免拍下闭眼照片）、不要移动手机、不要转动头部（避免拍摄不清晰）；</li><li>自拍时，要求每张头像均要有所变化，通过<strong>改变头上的配饰和发型</strong>来改变；</li></ol><p>&nbsp;</p>",
+        "type": 2,
+        "cycleType": 1,
+        "singleCount": 8,
+        "status": 0,
+        "description ": "使用手机自拍，将头像上传给我们，我们就给你付钱。本任务每个人拍摄8张。"
+    },
+    "implementation": {
+        "personInProjectId": 0,
+        "status": 0,
+        "complateCount": 0,
+        "qualifiedRate": 0,
+        "lastWorkTime": "0001-01-01T00:00:00",
+        "myInviteCode": null
+    },
+    "errorCode": "0",
+    "description": "获取成功",
+    "errorUri": null,
+    "hasError": false
+}

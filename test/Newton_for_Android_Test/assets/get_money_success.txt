@@ -1,0 +1,12 @@
+{
+    "balance": 26.69,
+    "waitPay": 0,
+    "profit": 26.71,
+    "withdrawals": 0.02,
+    "reward": 0,
+    "cardNumber": "Hh",
+    "errorCode": null,
+    "description": null,
+    "errorUri": null,
+    "hasError": false
+}

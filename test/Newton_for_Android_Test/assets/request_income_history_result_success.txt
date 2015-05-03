@@ -1,0 +1,14 @@
+{
+    "list": [
+        {
+            "personInProjectId": 977,
+            "time": "2014-09-03T19:23:44.667",
+            "money": 26.71,
+            "projectName": "上手任务"
+        }
+    ],
+    "errorCode": "0",
+    "description": null,
+    "errorUri": null,
+    "hasError": false
+}

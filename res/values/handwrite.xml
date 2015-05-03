@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    <string name="handwrite_jump_error">This one can not jump to record</string>
+    <string name="handwrite_jump_next_error">Not jump to the next record</string>
+    
+    <string name="app_title">Handwriting collection tools V1.0</string>
+    <string name="action_settings">Setting</string>
+    <string name="edit_info_title">Enter basic information</string>
+    <string name="handwrite_previous_btn">Pre</string>
+    <string name="handwrite_next_btn">Next</string>
+    <string name="clear_btn">Rewrite</string>
+    <string name="undo_btn">Undo</string>
+    <string name="handwrite_save">Saving</string>
+    <string name="handwrite_start">Start</string>
+    <string name="handwrite_pause">Pause</string>
+    <string name="start_write">Formal writing</string>
+    <string name="test_write">Test writing</string>
+    <string name="upload">Upload</string>
+    <string name="export">Upload result</string>
+    <string name="about">Instructions</string>
+    <string name="about_title">Handwriting collection roles:</string>
+    <string name="get_task_title">Formal written number:</string>
+    <string name="save_data">Saving data, please wait</string>
+    <string name="handwrite_load_data">Data is being read, please wait</string>
+    <string name="edit_empty">The input data can not be empty</string>
+    <string name="len_error">Input data length is incorrect</string>
+    <string name="age">Age:</string>
+    <string name="main_tips1">Task ID:</string>
+    <string name="main_tips2">Release Date:</string>
+    <string name="about_tips">1. Keep WiFi or 3G access\
+\n\n2. Finish writing in a fixed environment\
+\n\n3. Joined-up writing just can happen in a single word\
+\n\n4. Keep the text line level,don\'t tilt\
+\n\n5. Write up does not span the next line\
+\n\n6. Don\'t repeat writing on a same word\
+\n\n7. Extra stroke or points are forbidden</string>
+    <string name="file_empty">Corpus set of data file does not exist</string>
+    <string name="canvas_tips">canvas:</string>
+    <string name="word_tips">word:</string>
+    <string name="mode_test">[test]</string>
+    <string name="mode_formal">[formal]</string>
+    <string name="progress_dialog_loading">Data Loading</string>
+    <string name="handwrite_list_begin">Already the first writing</string>
+    <string name="handwrite_list_end">This is the last one writing</string>
+    <string name="login_email">Email:</string>
+    <string name="login_email_hit">Email is your certificate for sign in</string>
+    <string name="login_password">Password:</string>
+    <string name="login_sign_button">Sign in</string>
+    <string name="login_account_tips">If you have no account, please create a new account:</string>
+    <string name="login_account_button">Create new account</string>
+    <string name="copyright_tips">All copyright are reserved by Datatang\nhttp://crowdsourcing.datatang.com/</string>
+    <string name="loading_tips">This software just be used for collecting specific text handwriting;\n\nNetwork flow will happen in the process of collecting handwriting.  please keep WiFi access;\n\nWe will probably collect your some private information. We promise that these information is used only for related products\' research and development and your private information is confidential</string>
+	<string name="loading_account_button">Agree Enter</string>
+	<string name="account_title">Please enter your account information:</string>
+	<string name="account_password_tips1">Pick a password:</string>
+	<string name="account_password_tips2">Retype password:</string>
+	<string name="account_phone_tips">Mobile phone:</string>
+	<string name="create_button">Create my account</string>
+	<string name="main_start_tips">formal writing can begin after test writing</string>
+	<string name="samples_button">Samples</string>
+	<string name="empty_name">Name can not be empty!</string>
+	<string name="empty_id">Idcard number can not be empty!</string>
+	<string name="password_different">Password is not the same!</string>
+	<string name="empty_phone">Phone can not be empty!</string>
+	<string name="name_tips">My name is:</string>
+	<string name="name_hit1">first name</string>
+	<string name="name_hit2">last name</string>
+	<string name="gender_tips">My gender:</string>
+	<string name="gender_male">Male</string>
+	<string name="gender_female">Female</string>
+	<string name="id_card_no_tips">ID Card No.:</string>
+	<string name="country_tips">Country:</string>
+	<string name="hand_tips">Familiar with hand writing:</string>
+	<string name="handedness_tips">Character Handedness:</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="right">Right</string>
+	<string name="left">Left</string>
+	<string name="screen_tips">Screen Orientation:</string>
+	<string name="screen_horizontal">Horizontal</string>
+	<string name="screen_vertical">Vertical</string>
+	<string name="pen_tips">Pen/Hand:</string>
+	<string name="pen">Pen</string>
+	<string name="hand">Hand</string>
+	<string name="data_save">Saving</string>
+	<string name="get_task_tips">It is getting your formal written number from server, please wait...\n\nNote: need to connect to the Internet at this time, please keep the wifi or 3 G network access.</string>
+	<string name="get_task_tips_status_1">Sorry, the result of test writting is being reviewed, please try again after 2 hours.</string>
+	<string name="get_task_tips_status_2">Sorry, the result of your test writting does not meet the requirements of our specification after reviewing, so you can not continue to participate our task.</string>
+	<string name="get_task_tips_status_3">The result of your test writting has been qualified, you can begin formal writing assignment:</string>
+	<string name="input_num_tips">Your formal writing number:</string>
+	<string name="return_button">Return</string>
+	<string name="start_task_button">Start task</string>
+	<string name="register_success_tips">Registration success:</string>
+	<string name="register_fail_tips">Registration failed:</string>
+	<string name="register_success_message">If account registration is successful, system will sent a confirmation letter to your Email. Please return to home page and use your Email and password to login</string>
+	<string name="agree">Agree</string>
+	<string name="enter">Enter</string>
+	<string name="save_btn">Save</string>
+	<string name="begin">Begin</string>
+	<string name="sample_title_tips">Handwriting collection sample:</string>
+	<string name="sample_tips_right">Correct:</string>
+	<string name="sample_tips_wrong">Wrong:</string>
+	<string name="sample_tips_1">Rule 1: Joined-up writing just can happen in a single word</string>
+	<string name="sample_tips_2">Rule 2: keep the text line level, don\'t tilt.</string>
+	<string name="sample_tips_3">Rule 3: Extra stroke or points are forbidden</string>
+	<string name="sample_tips_4">Rule 4: Write up does not span the next line</string>
+	<string name="sample_tips_5">Role 5: Don\'t repeat writing on a same word</string>
+	<string name="handwrite_dialog_clear_data_title">Clear all data?</string>
+	<string name="handwrite_dialog_clear_data_ok">Confirm</string>
+	<string name="handwrite_dialog_clear_data_cancel">Cancel</string>
+	<string name="delete_file_tips">Deleting...</string>
+	<string name="word_error_tips">Too few strokes, can\'t be saved</string>
+</resources>

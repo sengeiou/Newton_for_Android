@@ -1,0 +1,22 @@
+{
+    "list": [
+        {
+            "status": 2,
+            "money": 0.01,
+            "time": "2014-08-27T17:48:42",
+            "createTime": "2014-08-27T17:48:01",
+            "id": 15
+        },
+        {
+            "status": 2,
+            "money": 0.01,
+            "time": "2014-08-27T17:48:42",
+            "createTime": "2014-08-27T17:48:17",
+            "id": 16
+        }
+    ],
+    "errorCode": null,
+    "description": null,
+    "errorUri": null,
+    "hasError": false
+}

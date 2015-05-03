@@ -1,0 +1,103 @@
+{
+    "taskHandler": "com.leleliu008.newton.business.task.handwriting.HndTaskHandler",
+    "templates": [
+        {
+            "id": "firstTemplate",
+            "type": "display",
+            "name": "com.leleliu008.newton.business.task.template.FormTemplate"
+            "title": "Enter basic information",
+            "subTitle": "",
+            "widgets": [
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WEditText",
+                    "hint": "please input your name",
+                    "title": "My Name",
+                    "key": "Name",
+                    "checkers": [
+                        {
+                            "relationship": "AND",
+                            "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                            "failText": "name can not empty!"
+                        }
+                    ]
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WRadioGroup",
+                    "values": "Male|Female",
+                    "defaultValue": "Male",
+                    "title": "gender",
+                    "key": "Sex"
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WEditText",
+                    "hint": "please input age",
+                    "title": "Age",
+                    "key": "Age",
+                    "checkers": [
+                        {
+                            "relationShip": "&&",
+                            "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                            "failText": "age can not empty!"
+                        },
+                        {
+                            "relationShip": "&&",
+                            "name": "com.leleliu008.newton.business.task.template.widget.checker.DigitsOnlyChecker",
+                            "failText": "age only can be digit!"
+                        }
+                    ]
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WEditText",
+                    "title": "ID Card No.",
+                    "key": "idCardNo",
+                    "checkers": [
+                        {
+                            "relationship": "AND",
+                            "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                            "failText": "ID Card No. can not empty!"
+                        }
+                    ]
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WCountryComboBox",
+                    "title": "Country",
+                    "key": "Country"
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WRadioGroup",
+                    "values": "Yes|No",
+                    "defaultValue": "Yes",
+                    "title": "Familiar with\nhand writing",
+                    "key": "Familiar-with-handWriting"
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WRadioGroup",
+                    "values": "Right|Left",
+                    "defaultValue": "Right",
+                    "title": "Character\nHandedness",
+                    "key": "Character-handness"
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WRadioGroup",
+                    "values": "Vertical|Horizontal",
+                    "defaultValue": "Vertical",
+                    "title": "Screen\nOrientation",
+                    "key": "Screen-orientation"
+                },
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WRadioGroup",
+                    "values": "Hand|Pen",
+                    "defaultValue": "Hand",
+                    "title": "Pen/Hand",
+                    "key": "Pen-Hand"
+                }
+            ],
+            "actions": [
+                {
+                    "text": "Save & Begin >>",
+                    "class": "com.leleliu008.newton.business.task.handwriting.HndAction"
+                }
+            ]
+        }
+    ]
+}

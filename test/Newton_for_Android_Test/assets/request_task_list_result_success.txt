@@ -1,0 +1,53 @@
+{
+    "list": [
+        {
+            "title": "苏州话录音任务第一季（Android版）",
+            "id": 1141,
+            "money": 0.1,
+            "integral": 2,
+            "memberCount": 43,
+            "image": "http://crowd.datatang.com/zh-cn/File/Get?type=ProjectImage&fileName=635501222079290113.png",
+            "status": 0,
+            "singleCount": 50
+        },
+        {
+            "title": "上海话录音任务第二季（Android版）",
+            "id": 1126,
+            "money": 0.1,
+            "integral": 2,
+            "memberCount": 47,
+            "image": "http://crowd.datatang.com/zh-cn/File/Get?type=ProjectImage&fileName=635501222391657979.png",
+            "status": 0,
+            "singleCount": 50
+        },
+        {
+            "title": "普通话录音任务（测试任务）",
+            "id": 1124,
+            "money": 0,
+            "integral": 2,
+            "memberCount": 92,
+            "image": "http://crowd.datatang.com/zh-cn/File/Get?type=ProjectImage&fileName=635501223445178237.png",
+            "status": 0,
+            "singleCount": 30
+        },
+        {
+            "title": "粤语录音任务第二季（Android版）",
+            "id": 1120,
+            "money": 0.1,
+            "integral": 2,
+            "memberCount": 72,
+            "image": "http://crowd.datatang.com/zh-cn/File/Get?type=ProjectImage&fileName=635501222591799427.png",
+            "status": 0,
+            "singleCount": 500
+        }
+    ],
+    "paginatin": {
+        "size": 10,
+        "currentPage": 1,
+        "totalPages": 1
+    },
+    "errorCode": "0",
+    "description": null,
+    "errorUri": null,
+    "hasError": false
+}

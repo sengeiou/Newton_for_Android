@@ -1,0 +1,135 @@
+{
+    "taskInfo": {
+        "id": 1206,
+        "templateType": 2,
+        "title": "图片采集任务",
+        "endTime": "2015-01-10T00:00:00",
+        "image": "635497592169814453.jpg",
+        "price": 5,
+        "participants": 1,
+        "taskIntegral": 5,
+        "tryEnable": false,
+        "isClaim": true,
+        "intro": "",
+        "type": 2,
+        "cycleType": 0,
+        "singleCount": 20,
+        "status": 2
+    },
+    "exec": {
+        "taskHandler": "com.leleliu008.newton.business.task.imaq.ImaqTaskHandler",
+        "templates": [
+            {
+                "id": "firstTemplate",
+                "type": "display",
+                "name": "com.leleliu008.newton.business.task.template.FormTemplate",
+                "title": "人脸采集",
+                "subTitle": "请您输入被拍人的相关信息",
+                "widgets": [
+                    {
+                        "name": "WRadioGroup",
+                        "values": "男|女",
+                        "defaultValue": "男",
+                        "title": "性别",
+                        "key": "gender"
+                    },
+                    {
+                        "name": "WEditText",
+                        "hint": "请输入年龄",
+                        "title": "年龄",
+                        "key": "age",
+                        "checkers": [
+                            {
+                                "relationShip": "AND",
+                                "regex": "[0-9]{2}",
+                                "failText": "不是年龄"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市我的",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市您吗的",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市大家好啊",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市yy",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                    ,
+                    {
+                        "name": "WChineseCityComboBox",
+                        "title": "城市",
+                        "key": "city"
+                    }
+                ],
+                "actions": [
+                    {
+                        "text": "下一步",
+                        "startPageId": "secondPage"
+                    }
+                ]
+            }
+        ]
+    },
+    "implementation": {
+        "personInProjectId": 14861,
+        "status": 2,
+        "complateCount": 0,
+        "qualifiedRate": 0,
+        "lastWorkTime": "2014-11-06T12:41:47.483"
+    },
+    "errorCode": "0",
+    "description": "获取成功",
+    "errorUri": null,
+    "hasError": false
+}

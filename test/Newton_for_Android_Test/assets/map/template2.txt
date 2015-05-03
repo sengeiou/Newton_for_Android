@@ -1,0 +1,15 @@
+{
+    "id": "secondTemplate",
+    "type": "display",
+    "name": "com.leleliu008.newton.business.task.template.PictureTemplate",
+    "title": "商店拍摄采集",
+    "subTitle": "请拍摄此商店的门牌",
+    "minPicNum": 1,
+    "maxPicNum": 8,
+    "actions": [
+        {
+            "text": "上传",
+            "class": "com.leleliu008.newton.business.task.map.UploadAction"
+        }
+    ]
+}

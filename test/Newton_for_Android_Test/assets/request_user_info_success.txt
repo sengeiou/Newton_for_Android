@@ -1,0 +1,25 @@
+{
+    "userName": "biaozhu1",
+    "nickName": "Tyy",
+    "phone": "15656059397",
+    "gender": 3,
+    "email": null,
+    "avatar": "http://auth.datatang.com/Avatar/96F16894-5D6D-481A-A420-E174AD2216F4.jpg",
+    "personId": 4,
+    "location": "阿图什",
+    "level": {
+        "score": 44,
+        "levelName": "武林新丁",
+        "next_levelName": "江湖小虾",
+        "next_nextLevelScore": 56
+    },
+    "cardInfo": {
+        "alipayNumber": "Hh",
+        "idCardNumber": "555",
+        "realName": "王龙喜"
+    },
+    "errorCode": null,
+    "description": null,
+    "errorUri": null,
+    "hasError": false
+}

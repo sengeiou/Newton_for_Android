@@ -1,0 +1,54 @@
+{
+    "id": "firstTemplate",
+    "type": "display",
+    "name": "com.leleliu008.newton.business.task.template.FormTemplate",
+    "title": "商场中商店信息采集",
+    "subTitle": "请您输入此商场中的商店的相关信息",
+    "widgets": [
+        {
+            "name": "com.leleliu008.newton.business.task.template.widget.WEditText",
+            "hint": "请输入商场名称",
+            "title": "商场名称",
+            "key": "market",
+            "checkers": [
+                {
+                    "relationShip": "&&",
+                    "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                    "failText": "商场名称不能为空"
+                }
+            ]
+        },
+        {
+            "name": "com.leleliu008.newton.business.task.template.widget.WEditText",
+            "hint": "请输入商店名称",
+            "title": "商店名称",
+            "key": "store",
+            "checkers": [
+                {
+                    "relationShip": "&&",
+                    "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                    "failText": "商店名称不能为空"
+                }
+            ]
+        },
+        {
+            "name": "com.leleliu008.newton.business.task.template.widget.WLocation",
+            "hint": "",
+            "title": "商店位置",
+            "key": "location",
+            "checkers": [
+                {
+                    "relationShip": "&&",
+                    "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                    "failText": "商店位置不能为空"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "text": "下一步",
+            "class": "com.leleliu008.newton.business.task.map.MapAction"
+        }
+    ]
+}

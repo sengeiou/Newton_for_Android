@@ -1,0 +1,48 @@
+{
+    "isOnce": false,
+    "taskHandler": "com.leleliu008.newton.business.task.imaq.ImaqTaskHandler",
+    "templates": [
+        {
+            "id": "firstTemplate",
+            "type": "display",
+            "name": "com.leleliu008.newton.business.task.template.FormTemplate",
+            "title": "小票采集",
+            "subTitle": "请您的相关信息",
+            "widgets": [
+                {
+                    "name": "com.leleliu008.newton.business.task.template.widget.WChineseCityComboBox",
+                    "title": "城市",
+                    "key": "city",
+                    "checkers": [
+                        {
+                            "relationShip": "&&",
+                            "name": "com.leleliu008.newton.business.task.template.widget.checker.EmptyChecker",
+                            "failText": "城市不能为空"
+                        }
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "text": "下一步",
+                    "class": "com.leleliu008.newton.business.task.imaq.ImaqAction"
+                }
+            ]
+        },
+        {
+            "id": "secondTemplate",
+            "type": "display",
+            "name": "com.leleliu008.newton.business.task.template.PictureTemplate",
+            "title": "小票采集",
+            "subTitle": "",      
+	         "minPicNum": 1,
+            "maxPicNum": 100000,
+            "actions": [
+                {
+                    "text": "上传",
+                    "class": "com.leleliu008.newton.business.task.imaq.ImaqUploadAction"
+                }
+            ]
+        }
+    ]
+}

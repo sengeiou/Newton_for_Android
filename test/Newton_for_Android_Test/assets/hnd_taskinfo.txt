@@ -1,0 +1,30 @@
+{
+    "taskInfo": {
+        "id": 1206,
+        "templateType": 2,
+        "title": "图片采集任务",
+        "endTime": "2015-01-10T00:00:00",
+        "image": "635497592169814453.jpg",
+        "price": 5,
+        "participants": 1,
+        "taskIntegral": 5,
+        "tryEnable": false,
+        "isClaim": true,
+        "intro": "",
+        "type": 2,
+        "cycleType": 0,
+        "singleCount": 20,
+        "status": 2
+    },
+    "implementation": {
+        "personInProjectId": 14861,
+        "status": 2,
+        "complateCount": 0,
+        "qualifiedRate": 0,
+        "lastWorkTime": "2014-11-06T12:41:47.483"
+    },
+    "errorCode": "0",
+    "description": "获取成功",
+    "errorUri": null,
+    "hasError": false
+}
