@@ -1,12 +1,16 @@
 package com.leleliu008.newton.business.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class Home extends Activity {
+import com.leleliu008.newton.framework.bitmap.TakePhotoFragment;
+import com.leleliu008.newton.framework.ui.fragment.BaseFragmentActivity;
+
+public class Home extends BaseFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getFragmentMediator().addFragment(this, new TakePhotoFragment());
 	}
 }
