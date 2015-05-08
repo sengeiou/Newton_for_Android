@@ -1,4 +1,4 @@
-package com.leleliu008.newton.framework.bitmap;
+package com.leleliu008.newton.base.camera;
 
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -8,15 +8,29 @@ import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
 import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.SurfaceHolder.Callback;
 
+/**
+ * 拍照处理
+ * 
+ * @author 792793182@qq.com 2014-9-22
+ *
+ */
 public final class CameraManager {
-	
+
 	private Camera camera;
 	
 	/** 摄像头是否已经在预览状态. true:预览状态 ;false:没有预览状态 */
 	private boolean isPreview;
+	
+	private static final class InstanceHolder {
+		private static CameraManager instance = new CameraManager();
+	}
+	
+	public static CameraManager getInstance() {
+		return InstanceHolder.instance;
+	}
 	
 	public void initCamera(final SurfaceView surfaceView, final int width, final int height) {
 		SurfaceHolder surfaceHolder = surfaceView.getHolder();

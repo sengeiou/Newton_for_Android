@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
+import com.leleliu008.newton.base.camera.CameraManager;
 import com.leleliu008.newton.framework.ui.fragment.BaseFragment;
 import com.leleliu008.newton.framework.util.BitmapUtil;
 
@@ -22,7 +23,7 @@ public final class TakePhotoFragment extends BaseFragment implements OnClickList
 
 	private static final String TAG = TakePhotoFragment.class.getSimpleName();
 	
-	private CameraManager cameraManager = new CameraManager();
+	private CameraManager cameraManager = CameraManager.getInstance();
 	
 	
 	@Override
