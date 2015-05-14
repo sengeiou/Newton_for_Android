@@ -69,6 +69,11 @@
     <!-- 自动聚焦权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <!-- 读取电话状态需要的权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 处理拨打电话的权限 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+
     <application
         android:name="com.leleliu008.newton.MyApp"
         android:allowBackup="true"
@@ -76,7 +81,6 @@
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light" >
-
         <activity
             android:name="com.leleliu008.newton.business.home.SplashActivity"
             android:label="@string/app_name"
@@ -105,7 +109,6 @@
                 <action android:name="com.leleliu008.newton.intent.action.Settings" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.leleliu008.newton.framework.qr.activity.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -113,7 +116,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        
+
         <!-- 百度定位服务 -->
         <service
             android:name="com.baidu.location.f"
@@ -212,6 +215,7 @@
             android:value="64e5bde73a359c85abf385f7" />
         <!-- JPush 结束 -->
 
+
         <!-- ×××××××××××下面是腾讯开放平台SDK的注册信息×××××××××× -->
 
         <activity
@@ -242,15 +246,23 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="nBuGQjt6cKOso1N7Ggjw72ZU" />
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
         </service>
+
+		<receiver android:name=".framework.phone.PhoneStateReceiver" >
+		    <intent-filter>
+		        <action android:name="android.intent.action.PHONE_STATE" />
+		        <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+		    </intent-filter>
+		</receiver>
         
     </application>
 
@@ -266,13 +278,12 @@
     <!-- 来电消音 -->
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    
-    
-   
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="false"
         android:resizeable="true"
         android:smallScreens="true" />
+
 </manifest>
