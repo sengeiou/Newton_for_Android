@@ -36,8 +36,10 @@ public final class MyApp extends Application {
 
 	private volatile ISetting mSetting;
 	
+	/** 腾讯开放平台接口 */
 	private Tencent mTencent;
 	
+	/** 微信开放平台接口 */
 	private IWXAPI wxapi;
 	
 	@Override
