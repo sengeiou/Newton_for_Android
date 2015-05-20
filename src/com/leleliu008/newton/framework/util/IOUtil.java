@@ -23,7 +23,7 @@ import com.leleliu008.newton.base.DebugLog;
 /**
  * IO工具类
  * 
- * @author 792793182@qq.com 2014-09-28
+ * @author 792793182@qq.com 2014-9-22
  *
  */
 public final class IOUtil {
@@ -73,6 +73,41 @@ public final class IOUtil {
 		return result;
 	}
 	
+	public static void readTextFileByLine(Reader reader, ReadLineCallback callback) {
+		BufferedReader bReader = null;
+		try {
+			bReader = new BufferedReader(reader);
+			String lineStr = null;
+			while ((lineStr = bReader.readLine()) != null) {
+				if (callback != null) {
+					callback.readLine(lineStr);
+				}
+			}
+		} catch (Exception e) {
+			DebugLog.e(TAG, "readTextFileByLine()", e);
+		} finally {
+			if (bReader != null) {
+				try {
+					bReader.close();
+				} catch (IOException e) {
+					DebugLog.e(TAG, "readTextFileByLine()", e);
+				}
+			}
+		}
+	}
+	
+	public static void readTextFileByLine(File file, ReadLineCallback callback) {
+		try {
+			readTextFileByLine(new FileReader(file), callback);
+		} catch (FileNotFoundException e) {
+			DebugLog.e(TAG, "readTextFileByLine()", e);
+		}
+	}
+	
+	public static void readTextFileByLine(InputStream is, ReadLineCallback callback) {
+		readTextFileByLine(new InputStreamReader(is), callback);
+	}
+	
 	public static String readTextFile(Reader reader) {
 		StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bReader = null;
@@ -95,7 +130,7 @@ public final class IOUtil {
 		}
 		return stringBuilder.toString();
 	}
-	
+
 	/**
 	 * 读取文本文件
 	 * @param file 文本文件
@@ -327,5 +362,13 @@ public final class IOUtil {
 		} catch (FileNotFoundException e) {
 			DebugLog.e(TAG, "copy()", e);
 		}
+	}
+	
+	/**
+	 * 读取一行的回调
+	 *
+	 */
+	public static interface ReadLineCallback {
+		void readLine(String lineStr);
 	}
 }
