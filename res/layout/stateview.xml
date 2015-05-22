@@ -33,15 +33,12 @@
         <Button
             android:id="@+id/stateview_btn"
             android:layout_width="150dip"
-            android:layout_height="50dip"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dip"
-            android:paddingBottom="20dip"
-            android:paddingLeft="40dip"
-            android:paddingRight="40dip"
-            android:paddingTop="20dip"
             android:text="@string/setting"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:background="@drawable/state_list_rounded_rectangle" />
     </LinearLayout>
 
 </LinearLayout>

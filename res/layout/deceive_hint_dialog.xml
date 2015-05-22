@@ -30,29 +30,22 @@
         android:id="@+id/checkBox_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dip"
         android:layout_marginLeft="15dip"
         android:paddingRight="15dip"
-        android:layout_marginBottom="15dip"
         android:text="@string/task_not_prompt"
         android:textColor="@color/black" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/dialog_ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dip" >
-
-        <Button
-            android:id="@+id/dialog_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_marginLeft="15dip"
-            android:layout_marginRight="15dip"
-            android:layout_weight="0.09"
-            android:text="@string/ok"
-            android:textSize="18sp"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginBottom="15dip"
+        android:text="@string/ok"
+        android:textColor="@color/white"
+        android:textSize="18sp" 
+        android:background="@drawable/state_list_rounded_rectangle"/>
 
 </LinearLayout>
