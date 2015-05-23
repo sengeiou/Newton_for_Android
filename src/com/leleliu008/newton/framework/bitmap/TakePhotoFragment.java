@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.RelativeLayout;
 
 import com.leleliu008.newton.R;
@@ -19,6 +20,12 @@ import com.leleliu008.newton.base.camera.CameraManager;
 import com.leleliu008.newton.framework.ui.fragment.BaseFragment;
 import com.leleliu008.newton.framework.util.BitmapUtil;
 
+/**
+ * 拍照界面
+ * 
+ * @author 792793182@qq.com 2014-9-22
+ *
+ */
 public final class TakePhotoFragment extends BaseFragment implements OnClickListener {
 
 	private static final String TAG = TakePhotoFragment.class.getSimpleName();
@@ -37,15 +44,25 @@ public final class TakePhotoFragment extends BaseFragment implements OnClickList
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		setTitleText("拍照");
+		
 		view.findViewById(R.id.take_photo_fragment_take_photo_btn).setOnClickListener(this);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		DebugLog.d(TAG, "onResume()");
-		SurfaceView surfaceView = (SurfaceView) findViewById(R.id.take_photo_fragment_surface_view);
-		cameraManager.initCamera(surfaceView, Environment.getInstance().getScreenWidth(), Environment.getInstance().getScreenHeight());
+		final SurfaceView surfaceView = (SurfaceView) findViewById(R.id.take_photo_fragment_surface_view);
+		surfaceView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@Override
+			public void onGlobalLayout() {
+				surfaceView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				cameraManager.initCamera(surfaceView, surfaceView.getWidth(), surfaceView.getHeight());
+				DebugLog.d(TAG, "surfaceView.getWidth() = " + surfaceView.getWidth());
+				DebugLog.d(TAG, "surfaceView.getHeight() = " + surfaceView.getHeight());
+			}
+		});
 	}
 	
 	@Override

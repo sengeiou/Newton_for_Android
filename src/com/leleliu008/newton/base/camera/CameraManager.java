@@ -1,5 +1,7 @@
 package com.leleliu008.newton.base.camera;
 
+import com.leleliu008.newton.base.DebugLog;
+
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +21,8 @@ import android.view.SurfaceHolder.Callback;
  */
 public final class CameraManager {
 
+	private static final String TAG = CameraManager.class.getSimpleName();
+	
 	private Camera camera;
 	
 	/** 摄像头是否已经在预览状态. true:预览状态 ;false:没有预览状态 */
@@ -33,6 +37,8 @@ public final class CameraManager {
 	}
 	
 	public void initCamera(final SurfaceView surfaceView, final int width, final int height) {
+		DebugLog.d(TAG, "initCamera()");
+		
 		SurfaceHolder surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(new Callback() {
 
@@ -51,6 +57,8 @@ public final class CameraManager {
 				// 如果camera不为null，释放摄像头
 				if (camera != null) {
 					if (isPreview) {
+						isPreview = false;
+						
 						camera.stopPreview();
 						camera.release();
 						camera = null;
@@ -107,6 +115,8 @@ public final class CameraManager {
 	}
 
 	public void takePhoto(PictureCallback jpeg) {
+		DebugLog.d(TAG, "takePhoto()");
+		
 		if (camera != null) {
 			camera.takePicture(null, null, jpeg);
 		}
@@ -117,12 +127,16 @@ public final class CameraManager {
 	}
 
 	public void stopPreview() {
+		DebugLog.d(TAG, "stopPreview()");
+		
 		if (camera != null) {
 			camera.stopPreview();
 		}
 	}
 
 	public void release() {
+		DebugLog.d(TAG, "release()");
+		
 		if (camera != null) {
 			camera.release();
 		}
