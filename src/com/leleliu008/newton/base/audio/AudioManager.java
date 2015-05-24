@@ -34,8 +34,8 @@ public final class AudioManager {
 	 * 
 	 * @param totalAudioLen  音频长度
 	 * @param totalDataLen   总数据长度
-	 * @param sampleRate     采样率
-	 * @param sampleBit      采样大小：Android支持16bit和8bit
+	 * @param sampleRate     采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
+	 * @param sampleBit      采样大小，Android支持16bit和8bit
 	 * @param channels       通道数
 	 * @return
 	 */
@@ -97,8 +97,8 @@ public final class AudioManager {
 	 * 将PCM文件转换成WAV文件
 	 * @param pcmFile      PCM文件
 	 * @param wavFile      WAV文件
-	 * @param sampleRate   采样率
-	 * @param sampleBit    采样大小：Android支持16bit和8bit
+	 * @param sampleRate   采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
+	 * @param sampleBit    采样大小，Android支持16bit和8bit
 	 * @param channels     通道数量
 	 */
 	public void convertPCM2WAV(File pcmFile, File wavFile, int sampleRate, int sampleBit, int channels) {
@@ -142,8 +142,8 @@ public final class AudioManager {
 	
 	/**
 	 * 获取数据速率，但是为KB/S
-	 * @param sampleRate   采样率
-	 * @param sampleBit    采样大小：Android支持16bit和8bit
+	 * @param sampleRate   采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
+	 * @param sampleBit    采样大小，Android支持16bit和8bit
 	 * @param channels     通道数量
 	 */
 	public int getByteRate(int sampleRate, int sampleBit, int channels) {
