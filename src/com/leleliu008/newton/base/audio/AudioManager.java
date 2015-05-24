@@ -2,10 +2,14 @@ package com.leleliu008.newton.base.audio;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import com.leleliu008.newton.base.DebugLog;
+import com.leleliu008.newton.framework.util.ByteUtil;
+import com.leleliu008.newton.framework.util.IOUtil;
 
 /**
  * 音频处理
@@ -28,15 +32,18 @@ public final class AudioManager {
 	/**
 	 * 16位的WAV文件头，插入这些信息就可以得到可以播放的文件。
 	 * 
-	 * @param totalAudioLen
-	 * @param totalDataLen
-	 * @param longSampleRate
-	 * @param channels
-	 * @param byteRate
+	 * @param totalAudioLen  音频长度
+	 * @param totalDataLen   总数据长度
+	 * @param sampleRate     采样率
+	 * @param sampleBit      采样大小：Android支持16bit和8bit
+	 * @param channels       通道数
 	 * @return
 	 */
-	public byte[] getWAVHeader(long totalAudioLen, long totalDataLen,
-			long longSampleRate, int channels, long byteRate) {
+	public byte[] getWAVHeader(int totalAudioLen, int totalDataLen,
+			int sampleRate, int sampleBit, int channels) {
+		
+		long byteRate = getByteRate(sampleRate, sampleBit, channels);
+		
 		byte[] header = new byte[44];
 		header[0] = 'R'; // RIFF/WAVE header
 		header[1] = 'I';
@@ -62,17 +69,17 @@ public final class AudioManager {
 		header[21] = 0;
 		header[22] = (byte) channels;
 		header[23] = 0;
-		header[24] = (byte) (longSampleRate & 0xff);
-		header[25] = (byte) ((longSampleRate >> 8) & 0xff);
-		header[26] = (byte) ((longSampleRate >> 16) & 0xff);
-		header[27] = (byte) ((longSampleRate >> 24) & 0xff);
+		header[24] = (byte) (sampleRate & 0xff);
+		header[25] = (byte) ((sampleRate >> 8) & 0xff);
+		header[26] = (byte) ((sampleRate >> 16) & 0xff);
+		header[27] = (byte) ((sampleRate >> 24) & 0xff);
 		header[28] = (byte) (byteRate & 0xff);
 		header[29] = (byte) ((byteRate >> 8) & 0xff);
 		header[30] = (byte) ((byteRate >> 16) & 0xff);
 		header[31] = (byte) ((byteRate >> 24) & 0xff);
 		header[32] = (byte) (16 / 8);// (2 * 16 / 8); // block align
 		header[33] = 0;
-		header[34] = 16; // bits per sample
+		header[34] = (byte) sampleBit; // bits per sample
 		header[35] = 0;
 		header[36] = 'd';
 		header[37] = 'a';
@@ -88,12 +95,13 @@ public final class AudioManager {
 
 	/**
 	 * 将PCM文件转换成WAV文件
-	 * @param pcmFile          PCM文件
-	 * @param wavFile          WAV文件
-	 * @param longSampleRate   采样率
-	 * @param channels         通道数量
+	 * @param pcmFile      PCM文件
+	 * @param wavFile      WAV文件
+	 * @param sampleRate   采样率
+	 * @param sampleBit    采样大小：Android支持16bit和8bit
+	 * @param channels     通道数量
 	 */
-	private void convertPCM2WAV(File pcmFile, File wavFile, long sampleRate, int channels) {
+	public void convertPCM2WAV(File pcmFile, File wavFile, int sampleRate, int sampleBit, int channels) {
 		FileInputStream in = null;
 		FileOutputStream out = null;
 		
@@ -101,14 +109,11 @@ public final class AudioManager {
 			in = new FileInputStream(pcmFile);
 			out = new FileOutputStream(wavFile);
 
-			long totalAudioLen = in.getChannel().size();
-			long totalDataLen = totalAudioLen + 36;
-
-			long byteRate = 16 * sampleRate * channels / 8;
+			int totalAudioLen = (int) in.getChannel().size();
+			int totalDataLen = totalAudioLen + 36;
 			
 			// 写入头
-			out.write(getWAVHeader(totalAudioLen, totalDataLen, sampleRate,
-					channels, byteRate));
+			out.write(getWAVHeader(totalAudioLen, totalDataLen, sampleRate, sampleBit, channels));
 
 			byte[] data = new byte[1024];
 			// 写入PCM数据
@@ -133,5 +138,52 @@ public final class AudioManager {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 获取数据速率，但是为KB/S
+	 * @param sampleRate   采样率
+	 * @param sampleBit    采样大小：Android支持16bit和8bit
+	 * @param channels     通道数量
+	 */
+	public int getByteRate(int sampleRate, int sampleBit, int channels) {
+		return sampleRate * sampleBit * channels / 8;
+	}
+	
+	/**
+	 * 获取WAV文件的播放时长，单位为S
+	 * @param totalAudioLen   音频数据长度，单位是KB
+	 * @param byteRate        速率，单位是KB/S，可以通过getByteRate方法获取
+	 */
+	public int getWavDuration(int totalAudioLen, int byteRate) {
+		return totalAudioLen / byteRate;
+	}
+	
+	/**
+	 * 获取WAV文件的播放时长，单位为S
+	 * @param wavFile   WAV文件
+	 */
+	public int getWavDuration(File wavFile) {
+		try {
+			RandomAccessFile randomAccessFile = new RandomAccessFile(wavFile, "r");
+			byte[] head = IOUtil.read(randomAccessFile, 0, 44);
+
+			byte[] sampleRateBytes = { head[24], head[25], head[26], head[27] };
+			byte[] sampleBitBytes = { 0, 0, 0, head[34] };
+			byte[] channelsBytes = { 0, 0, 0, head[22] };
+			byte[] totalAudioLenBytes = { head[40], head[41], head[42], head[43] };
+			
+			int sampleRate = ByteUtil.toInt(sampleRateBytes);
+			int sampleBit = ByteUtil.toInt(sampleBitBytes);
+			int channels = ByteUtil.toInt(channelsBytes);
+			int totalAudioLen = ByteUtil.toInt(totalAudioLenBytes);
+			
+			int byteRate = getByteRate(sampleRate, sampleBit, channels);
+			
+			return getWavDuration(totalAudioLen, byteRate);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

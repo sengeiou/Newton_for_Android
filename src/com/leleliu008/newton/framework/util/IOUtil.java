@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 
 import android.content.Context;
@@ -362,6 +363,25 @@ public final class IOUtil {
 		} catch (FileNotFoundException e) {
 			DebugLog.e(TAG, "copy()", e);
 		}
+	}
+	
+	/**
+	 * 随机读取文件的一段数据
+	 * @param randomAccessFile
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
+	public static byte[] read(RandomAccessFile randomAccessFile, int offset, int length) {
+		byte[] result = new byte[length];
+		for (int i = 0; i < length; i++) {
+			try {
+				result[i] = randomAccessFile.readByte();
+			} catch (IOException e) {
+				DebugLog.e(TAG, "read()", e);
+			}
+		}
+		return result;
 	}
 	
 	/**
