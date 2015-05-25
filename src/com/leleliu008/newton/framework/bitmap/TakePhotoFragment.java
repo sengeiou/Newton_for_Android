@@ -1,5 +1,7 @@
 package com.leleliu008.newton.framework.bitmap;
 
+import java.util.Date;
+
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.hardware.Camera;
@@ -87,13 +89,14 @@ public final class TakePhotoFragment extends BaseFragment implements OnClickList
 				
 				@Override
 				public void onPictureTaken(byte[] data, Camera camera) {
-					Bitmap bitmap = cameraManager.toBitmap(data);
-					BitmapUtil.saveBitmapToFile(bitmap, Environment.getInstance().getMyDir() + "/xx.jpg", CompressFormat.JPEG);
+					Bitmap bitmap = BitmapUtil.toBitmap(data);
+					BitmapUtil.saveBitmapToFile(bitmap, Environment.getInstance().getMyDir() + "/" + new Date().getTime() + ".jpg", CompressFormat.JPEG);
 					
 					Bundle bundle = new Bundle();
 					bundle.putParcelable("bitmap", bitmap);
 					setResult(bundle);
-					finish();
+					
+					cameraManager.restartPreview();
 				}
 			});
 			break;

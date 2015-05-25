@@ -160,4 +160,8 @@ public final class BitmapUtil {
 			}
 		}
 	}
+	
+	public static Bitmap toBitmap(byte[] data) {
+		return BitmapFactory.decodeByteArray(data, 0, data.length);
+	}
 }

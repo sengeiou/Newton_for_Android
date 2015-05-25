@@ -1,17 +1,15 @@
 package com.leleliu008.newton.base.camera;
 
-import com.leleliu008.newton.base.DebugLog;
-
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
+import android.view.SurfaceView;
+
+import com.leleliu008.newton.base.DebugLog;
 
 /**
  * 拍照处理
@@ -102,6 +100,7 @@ public final class CameraManager {
 				} else {
 					camera.setDisplayOrientation(0);
 				}
+				
 				// 开始预览
 				camera.startPreview();
 				// 自动对焦
@@ -113,6 +112,19 @@ public final class CameraManager {
 			}
 		}
 	}
+	
+	public void restartPreview() {
+		DebugLog.d(TAG, "startPreview()");
+		
+		if (camera != null) {
+			// 开始预览
+			camera.startPreview();
+			// 自动对焦
+			camera.autoFocus(null);
+			
+			isPreview = true;
+		}
+	}
 
 	public void takePhoto(PictureCallback jpeg) {
 		DebugLog.d(TAG, "takePhoto()");
@@ -121,11 +133,7 @@ public final class CameraManager {
 			camera.takePicture(null, null, jpeg);
 		}
 	}
-
-	public Bitmap toBitmap(byte[] data) {
-		return BitmapFactory.decodeByteArray(data, 0, data.length);
-	}
-
+	
 	public void stopPreview() {
 		DebugLog.d(TAG, "stopPreview()");
 		
