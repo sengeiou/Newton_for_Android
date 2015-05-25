@@ -170,25 +170,25 @@ public final class AudioManager {
 			byte[] head = IOUtil.read(randomAccessFile, 0, 44);
 
 			byte[] sampleRateBytes = { head[24], head[25], head[26], head[27] };
-			byte[] sampleBitBytes = { 0, 0, 0, head[34] };
-			byte[] channelsBytes = { 0, 0, 0, head[22] };
+			byte[] sampleBitBytes = { head[34], 0, 0, 0 };
+			byte[] channelsBytes = { head[22], 0, 0, 0 };
 			byte[] totalAudioLenBytes = { head[40], head[41], head[42], head[43] };
 			
 			int sampleRate = ByteUtil.toInt(sampleRateBytes);
 			int sampleBit = ByteUtil.toInt(sampleBitBytes);
 			int channels = ByteUtil.toInt(channelsBytes);
+			int byteRate = getByteRate(sampleRate, sampleBit, channels);
 			int totalAudioLen = ByteUtil.toInt(totalAudioLenBytes);
 			
 			DebugLog.d(TAG, "sampleRate = " + sampleRate);
 			DebugLog.d(TAG, "sampleBit = " + sampleBit);
 			DebugLog.d(TAG, "channels = " + channels);
+			DebugLog.d(TAG, "byteRate = " + byteRate);
 			DebugLog.d(TAG, "totalAudioLen = " + totalAudioLen);
-			
-			int byteRate = getByteRate(sampleRate, sampleBit, channels);
 			
 			return getWavDuration(totalAudioLen, byteRate);
 		} catch (FileNotFoundException e) {
-			DebugLog.e(TAG, "getWavDuration()", e);
+			DebugLog.e(TAG, "convertPCM2WAV()", e);
 		}
 		return 0;
 	}
