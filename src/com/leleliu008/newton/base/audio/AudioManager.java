@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DecimalFormat;
 
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.framework.util.ByteUtil;
@@ -178,12 +179,41 @@ public final class AudioManager {
 			int channels = ByteUtil.toInt(channelsBytes);
 			int totalAudioLen = ByteUtil.toInt(totalAudioLenBytes);
 			
+			DebugLog.d(TAG, "sampleRate = " + sampleRate);
+			DebugLog.d(TAG, "sampleBit = " + sampleBit);
+			DebugLog.d(TAG, "channels = " + channels);
+			DebugLog.d(TAG, "totalAudioLen = " + totalAudioLen);
+			
 			int byteRate = getByteRate(sampleRate, sampleBit, channels);
 			
 			return getWavDuration(totalAudioLen, byteRate);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			DebugLog.e(TAG, "getWavDuration()", e);
 		}
 		return 0;
+	}
+
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("00");
+	
+	/**
+	 * 获取格式化的播放时长，格式为hh:mm:ss
+	 * @param wavFile   WAV文件
+	 * @return          格式化的播放时长
+	 */
+	public String getWavDurationStr(File wavFile) {
+		int duration = getWavDuration(wavFile);
+		
+		int hour = duration / (60 * 60);
+		int minites = (duration % (60 * 60)) / 60;
+		int seconds = duration - hour * 60 * 60 - minites * 60;
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		if (hour > 0) {
+			stringBuilder.append(DECIMAL_FORMAT.format(hour)).append(':');
+		}
+		stringBuilder.append(DECIMAL_FORMAT.format(minites)).append(':');
+		stringBuilder.append(DECIMAL_FORMAT.format(seconds)).append(':');
+		
+		return stringBuilder.toString();
 	}
 }
