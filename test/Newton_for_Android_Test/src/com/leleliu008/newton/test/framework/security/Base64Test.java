@@ -1,4 +1,4 @@
-package com.leleliu008.newton.test.util.security;
+package com.leleliu008.newton.test.framework.security;
 
 import android.test.AndroidTestCase;
 import android.util.Log;

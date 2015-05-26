@@ -1,4 +1,4 @@
-package com.leleliu008.newton.test.framework.ui;
+package com.leleliu008.newton.test.framework.ui.toast;
 
 import android.test.UiThreadTest;
 

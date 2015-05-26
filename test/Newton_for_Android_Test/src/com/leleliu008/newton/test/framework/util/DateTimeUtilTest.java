@@ -1,4 +1,4 @@
-package com.leleliu008.newton.test.util;
+package com.leleliu008.newton.test.framework.util;
 
 import android.test.AndroidTestCase;
 
