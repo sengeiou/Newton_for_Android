@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
  * 
  * @author 792793182@qq.com 2015-03-18
  */
-@SuppressWarnings("rawtypes")
 class ClipboardSDK11_ implements IClipboardManager {
 	private static final String TAG = "ClipboardSDK11_";
 
@@ -22,12 +21,10 @@ class ClipboardSDK11_ implements IClipboardManager {
 		mClipService = context.getSystemService(Context.CLIPBOARD_SERVICE);
 	}
 	
-	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void copy(CharSequence text) {
 		try {
-			Class clipDataClass = Class.forName("android.content.ClipData");
+			Class<?> clipDataClass = Class.forName("android.content.ClipData");
 			Method method1 = clipDataClass.getMethod("newPlainText", CharSequence.class, CharSequence.class);
 			Object clipDataObject = method1.invoke(null, "text", text);
 			
@@ -37,9 +34,7 @@ class ClipboardSDK11_ implements IClipboardManager {
 			Log.e(TAG, "copy()", e);
 		}
 	}
-
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public CharSequence paste() {
 		CharSequence result = null;
@@ -50,12 +45,12 @@ class ClipboardSDK11_ implements IClipboardManager {
 			Object clipDataObject = method1.invoke(mClipService);
 			
 			//获取数据类型描述
-			Class clipDataClass = Class.forName("android.content.ClipData");
+			Class<?> clipDataClass = Class.forName("android.content.ClipData");
 			Method method2 = clipDataClass.getMethod("getDescription", new Class[]{});
 			Object clipDescriptionObject = method2.invoke(clipDataObject, new Object[]{});
 			
 			//判断是否是文本
-			Class clipDescriptionClass = Class.forName("android.content.ClipDescription");
+			Class<?> clipDescriptionClass = Class.forName("android.content.ClipDescription");
 			Method method3 = clipDescriptionClass.getMethod("hasMimeType", new Class[]{String.class});
 			boolean hasText = (Boolean) method3.invoke(clipDescriptionObject, "text/plain");
 			if (hasText) {
@@ -64,7 +59,7 @@ class ClipboardSDK11_ implements IClipboardManager {
 				Object itemObject = method4.invoke(clipDataObject, 0);
 				
 				//获取文本
-				Class itemClass = Class.forName("android.content.ClipData$Item");
+				Class<?> itemClass = Class.forName("android.content.ClipData$Item");
 				Method method5 = itemClass.getMethod("getText", new Class[]{});
 				result = (CharSequence) method5.invoke(itemObject, new Object[]{});
 			}
