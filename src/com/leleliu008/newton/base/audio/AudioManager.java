@@ -15,7 +15,7 @@ import com.leleliu008.newton.framework.util.IOUtil;
 /**
  * 音频处理
  * 
- * @author 792793182@qq.com 2014-9-22
+ * @author 792793182@qq.com 2015-05-22
  *
  */
 public final class AudioManager {
