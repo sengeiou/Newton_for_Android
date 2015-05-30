@@ -17,15 +17,6 @@ public final class DES3 {
 	private static final String TAG = DES3.class.getSimpleName();
 	
 	private static final String Algorithm = "DESede/ECB/PKCS5Padding";
-	
-	private static Cipher cipher = null;
-	static {
-		try {
-			cipher = Cipher.getInstance(Algorithm);
-		} catch (Exception e) {
-			DebugLog.e(TAG, "", e);
-		}
-	}
 
 	private DES3() { }
 	
@@ -45,6 +36,7 @@ public final class DES3 {
 		SecretKey deskey = new SecretKeySpec(key, Algorithm);
 		
 		try {
+			Cipher cipher = Cipher.getInstance(Algorithm);
 			cipher.init(opmode, deskey);
 			return cipher.doFinal(bySrc);
 		} catch (Exception e) {

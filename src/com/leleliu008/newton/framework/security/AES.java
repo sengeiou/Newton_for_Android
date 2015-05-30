@@ -18,15 +18,6 @@ public final class AES {
 	
 	private static final String Algorithm = "AES/ECB/PKCS7Padding";
 
-	private static Cipher cipher = null;
-	static {
-		try {
-			cipher = Cipher.getInstance(Algorithm);
-		} catch (Exception e) {
-			DebugLog.e(TAG, "", e);
-		}
-	}
-
 	private AES() { }
 
 	public static byte[] encrypt(final byte[] bySrc, byte[] key) {
@@ -45,6 +36,7 @@ public final class AES {
 		SecretKey deskey = new SecretKeySpec(key, Algorithm);
 
 		try {
+			Cipher cipher = Cipher.getInstance(Algorithm);
 			cipher.init(opmode, deskey);
 			return cipher.doFinal(bySrc);
 		} catch (Exception e) {
