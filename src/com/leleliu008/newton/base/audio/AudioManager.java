@@ -200,20 +200,19 @@ public final class AudioManager {
 	 * @param wavFile   WAV文件
 	 * @return          格式化的播放时长
 	 */
-	public String getWavDurationStr(File wavFile) {
-		int duration = getWavDuration(wavFile);
-		
+	public StringBuilder getWavDurationStr(File wavFile) {
+		return getWavDurationStr(getWavDuration(wavFile));
+	}
+	
+	public StringBuilder getWavDurationStr(int duration) {
 		int hour = duration / (60 * 60);
 		int minites = (duration % (60 * 60)) / 60;
 		int seconds = duration - hour * 60 * 60 - minites * 60;
 		
 		StringBuilder stringBuilder = new StringBuilder();
-		if (hour > 0) {
-			stringBuilder.append(DECIMAL_FORMAT.format(hour)).append(':');
-		}
+		stringBuilder.append(DECIMAL_FORMAT.format(hour)).append(':');
 		stringBuilder.append(DECIMAL_FORMAT.format(minites)).append(':');
-		stringBuilder.append(DECIMAL_FORMAT.format(seconds)).append(':');
-		
-		return stringBuilder.toString();
+		stringBuilder.append(DECIMAL_FORMAT.format(seconds));
+		return stringBuilder;
 	}
 }
