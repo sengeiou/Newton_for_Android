@@ -39,42 +39,45 @@ public final class IOUtil {
 			return null;
 		}
 		
-		byte[] result = null;
-		
-		ByteArrayOutputStream baos = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			baos = new ByteArrayOutputStream();
-			
 			byte[] buff = new byte[1024];
 			int len = 0;
 			while (-1 != (len = is.read(buff))) {
 				baos.write(buff, 0, len);
 			}
 			baos.flush();
+			return baos.toByteArray();
 		} finally {
 			try {
 				is.close();
 			} catch (IOException e) {
-				DebugLog.e(TAG, "", e);
+				DebugLog.e(TAG, "inputStream2bytes()", e);
 			}
 			
 			if (baos != null) {
 				try {
 					baos.close();
 				} catch (IOException e) {
-					DebugLog.e(TAG, "", e);
+					DebugLog.e(TAG, "inputStream2bytes()", e);
 				}
 			}
 		}
-		
-		if (baos != null) {
-			result = baos.toByteArray();
-		}
-		
-		return result;
 	}
 	
-	public static void readTextFileByLine(Reader reader, ReadLineCallback callback) {
+	public static byte[] file2bytes(File file) throws FileNotFoundException, IOException {
+		if (file == null) {
+			return null;
+		}
+		
+		return inputStream2bytes(new FileInputStream(file));
+	}
+	
+	public static void readTextFileByLine(Reader reader, ReadLineCallback callback) throws IOException {
+		if (reader == null) {
+			return;
+		}
+		
 		BufferedReader bReader = null;
 		try {
 			bReader = new BufferedReader(reader);
@@ -84,8 +87,6 @@ public final class IOUtil {
 					callback.readLine(lineStr);
 				}
 			}
-		} catch (Exception e) {
-			DebugLog.e(TAG, "readTextFileByLine()", e);
 		} finally {
 			if (bReader != null) {
 				try {
@@ -97,20 +98,29 @@ public final class IOUtil {
 		}
 	}
 	
-	public static void readTextFileByLine(File file, ReadLineCallback callback) {
-		try {
-			readTextFileByLine(new FileReader(file), callback);
-		} catch (FileNotFoundException e) {
-			DebugLog.e(TAG, "readTextFileByLine()", e);
+	public static void readTextFileByLine(File file, ReadLineCallback callback) throws FileNotFoundException, IOException {
+		if (file == null) {
+			return;
 		}
+		
+		readTextFileByLine(new FileReader(file), callback);
 	}
 	
-	public static void readTextFileByLine(InputStream is, ReadLineCallback callback) {
+	public static void readTextFileByLine(InputStream is, ReadLineCallback callback) throws IOException {
+		if (is == null) {
+			return;
+		}
+		
 		readTextFileByLine(new InputStreamReader(is), callback);
 	}
 	
-	public static String readTextFile(Reader reader) {
+	public static String readTextFile(Reader reader) throws IOException {
+		if (reader == null) {
+			return "";
+		}
+		
 		StringBuilder stringBuilder = new StringBuilder();
+		
 		BufferedReader bReader = null;
 		try {
 			bReader = new BufferedReader(reader);
@@ -118,8 +128,6 @@ public final class IOUtil {
 			while ((lineStr = bReader.readLine()) != null) {
 				stringBuilder.append(lineStr).append('\n');
 			}
-		} catch (Exception e) {
-			DebugLog.e(TAG, "readTextFile()", e);
 		} finally {
 			if (bReader != null) {
 				try {
@@ -136,22 +144,28 @@ public final class IOUtil {
 	 * 读取文本文件
 	 * @param file 文本文件
 	 * @return     文件内容
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static String readTextFile(File file) {
-		try {
-			return readTextFile(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			DebugLog.e(TAG, "readTextFile()", e);
-			return "";
+	public static String readTextFile(File file) throws FileNotFoundException, IOException {
+		if (file == null) {
+			return null;
 		}
+		
+		return readTextFile(new FileReader(file));
 	}
 	
 	/**
 	 * 读取文本文件
 	 * @param is   文件流
 	 * @return     文件内容
+	 * @throws IOException 
 	 */
-	public static String readTextFile(InputStream is) {
+	public static String readTextFile(InputStream is) throws IOException {
+		if (is == null) {
+			return null;
+		}
+		
 		return readTextFile(new InputStreamReader(is));
 	}
 	
@@ -160,47 +174,44 @@ public final class IOUtil {
 	 * @param context　   上下文
 	 * @param fileName   文件流
 	 * @return     　　　　　　文件内容
+	 * @throws IOException 
 	 */
-	public static String readAssetsText(Context context, String fileName) {
-		try {
-			return readTextFile(context.getAssets().open(fileName));
-		} catch (IOException e) {
-			DebugLog.e(TAG, "readTextFile()", e);
-			return "";
-		}
+	public static String readAssetsText(Context context, String fileName) throws IOException {
+		return readTextFile(context.getAssets().open(fileName));
 	}
 	
 	/**
 	 * 读取二进制文件
 	 * @param file 二进制文件
 	 * @return     文件内容
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static byte[] readByteFile(File file) {
-		if (file != null && file.exists() && file.isFile()) {
-			try {
-				return inputStream2bytes(new FileInputStream(file));
-			} catch (FileNotFoundException e) {
-				DebugLog.e(TAG, "readByteFile()", e);
-			} catch (IOException e) {
-				DebugLog.e(TAG, "readByteFile()", e);
-			}
+	public static byte[] readByteFile(File file) throws FileNotFoundException, IOException {
+		if (file == null) {
+			return null;
 		}
 		
-		return null;
+		return inputStream2bytes(new FileInputStream(file));
 	}
 	
 	/**
-	 * 读取文本文件
+	 * 写文本文件
 	 * @param desFile 目的文件
 	 * @param content 文件内容
+	 * @throws IOException 
 	 */
-	public static void writeFile(File desFile, String content, boolean append) {
+	public static boolean writeFile(File desFile, String content, boolean append) throws IOException {
+		if (desFile == null) {
+			return false;
+		}
+		
 		BufferedWriter bWriter = null;
 		try {
 			bWriter = new BufferedWriter(new FileWriter(desFile, append));
 			bWriter.write(content);
-		} catch (Exception e) {
-			DebugLog.e(TAG, "writeFile()", e);
+			
+			return true;
 		} finally {
 			if (bWriter != null) {
 				try {
@@ -213,17 +224,22 @@ public final class IOUtil {
 	}
 	
 	/**
-	 * 读取文本文件
+	 * 写二进制文件
 	 * @param desFile 目的文件
 	 * @param content 文件内容
+	 * @throws IOException 
 	 */
-	public static void writeFile(File desFile, byte[] content, boolean append) {
+	public static boolean writeFile(File desFile, byte[] content, boolean append) throws IOException {
+		if (desFile == null) {
+			return false;
+		}
+		
 		OutputStream os = null;
 		try {
 			os = new FileOutputStream(desFile, append);
 			os.write(content);
-		} catch (Exception e) {
-			DebugLog.e(TAG, "writeFile()", e);
+			
+			return true;
 		} finally {
 			if (os != null) {
 				try {
@@ -239,11 +255,13 @@ public final class IOUtil {
 	 * 写文件
 	 * @param is       输入流
 	 * @param desFile  目标文件
+	 * @throws IOException 
 	 */
-	public static void writeFile(InputStream is, File desFile) {
+	public static void writeFile(InputStream is, File desFile) throws IOException {
 		if (is == null || desFile == null) {
 			return;
 		}
+		
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(desFile);
@@ -252,8 +270,6 @@ public final class IOUtil {
 			while (-1 != (len = is.read(buff))) {
 				fos.write(buff, 0, len);
 			}
-		} catch (Exception e) {
-			DebugLog.e(TAG, "writeFile()", e);
 		} finally {
 			if (fos != null) {
 				try {
@@ -321,7 +337,11 @@ public final class IOUtil {
 	 * @param inputStream  源文件流
 	 * @param desFile      目的文件
 	 */
-	public static void copy(InputStream inputStream, File desFile) {
+	public static boolean copy(InputStream inputStream, File desFile) {
+		if (inputStream == null || desFile == null) {
+			return false;
+		}
+		
 		FileOutputStream fileOutputStream = null;
 		try {
 			desFile.createNewFile();
@@ -331,8 +351,10 @@ public final class IOUtil {
 			while ((count = inputStream.read(buffer)) > 0) {
 				fileOutputStream.write(buffer, 0, count);
 			}
+			return true;
 		} catch (IOException e) {
 			DebugLog.e(TAG, "copy()", e);
+			return false;
 		} finally {
 			if (fileOutputStream != null) {
 				try {
@@ -357,11 +379,12 @@ public final class IOUtil {
 	 * @param srcFile  源文件
 	 * @param desFile  目的文件
 	 */
-	public static void copy(File srcFile, File desFile) {
+	public static boolean copy(File srcFile, File desFile) {
 		try {
-			copy(new FileInputStream(srcFile), desFile);
+			return copy(new FileInputStream(srcFile), desFile);
 		} catch (FileNotFoundException e) {
 			DebugLog.e(TAG, "copy()", e);
+			return false;
 		}
 	}
 	
