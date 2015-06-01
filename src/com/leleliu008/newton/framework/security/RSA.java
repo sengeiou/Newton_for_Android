@@ -6,12 +6,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
 
@@ -53,7 +59,7 @@ public final class RSA {
 				try {
 					is.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					DebugLog.e(TAG, "loadKeySotre()", e);
 				}
 			}
 		}
@@ -119,6 +125,71 @@ public final class RSA {
 		}
 	}
 
+	/**
+	 * 获取公钥的长度
+	 * @param publicKey 公钥
+	 * @return          公钥的长度
+	 */
+	public static int getLength(PublicKey publicKey) {
+		try {
+			// 获取算法
+			String algorithm = publicKey.getAlgorithm();
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+			BigInteger modulus = null;
+
+			// 如果是RSA加密
+			if ("RSA".equals(algorithm)) {
+				RSAPublicKeySpec keySpec = (RSAPublicKeySpec) keyFactory
+						.getKeySpec(publicKey, RSAPublicKeySpec.class);
+				modulus = keySpec.getModulus();
+			}
+			// 如果是DSA加密
+			else if ("DSA".equals(algorithm)) {
+				DSAPublicKeySpec keySpec = (DSAPublicKeySpec) keyFactory
+						.getKeySpec(publicKey, DSAPublicKeySpec.class);
+				modulus = keySpec.getP();
+			}
+			// 转换为二进制，获取公钥长度
+			return modulus.toString(2).length();
+		} catch (Exception e) {
+			DebugLog.e(TAG, "getLength()", e);
+			return 0;
+		}
+	}
+	
+
+	/**
+	 * 获取私钥的长度
+	 * @param privateKey 私钥
+	 * @return           私钥的长度
+	 */
+	public static int getLength(PrivateKey privateKey) {
+		try {
+			// 获取算法
+			String algorithm = privateKey.getAlgorithm();
+			KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+			BigInteger modulus = null;
+
+			// 如果是RSA加密
+			if ("RSA".equals(algorithm)) {
+				RSAPrivateKeySpec keySpec = (RSAPrivateKeySpec) keyFactory
+						.getKeySpec(privateKey, RSAPrivateKeySpec.class);
+				modulus = keySpec.getModulus();
+			}
+			// 如果是DSA加密
+			else if ("DSA".equals(algorithm)) {
+				DSAPrivateKeySpec keySpec = (DSAPrivateKeySpec) keyFactory
+						.getKeySpec(privateKey, DSAPrivateKeySpec.class);
+				modulus = keySpec.getP();
+			}
+			// 转换为二进制，获取公钥长度
+			return modulus.toString(2).length();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	/**
 	 * 用公钥进行加密
 	 * @param src       明文
@@ -214,6 +285,11 @@ public final class RSA {
 			return false;
 		}
 		
+		//Key的长度单位是bit
+		int keyLength = getLength(publicKey);
+		//能够加密的最大字节数
+		int bufferLength = keyLength / 8 - 11;
+		
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 		try {
@@ -224,17 +300,15 @@ public final class RSA {
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			
 			byte[] cache = null;
-			byte[] buffer = new byte[117];
-			int offSet = 0;
-			for (int i = 0; ; i++) {
+			byte[] buffer = new byte[bufferLength];
+			while (true) {
 				int readCount = fis.read(buffer);
 				DebugLog.d(TAG, "readCount = " + readCount);
 				if (readCount == -1) {
 					break;
 				} else {
-					cache = cipher.doFinal(buffer, offSet, readCount);
+					cache = cipher.doFinal(buffer, 0, readCount);
 					fos.write(cache);
-					offSet = i * 117;
 				}
 			}
 			return true;
@@ -279,6 +353,11 @@ public final class RSA {
 			return false;
 		}
 		
+		//Key的长度单位是bit
+		int keyLength = getLength(privateKey);
+		//能够加密的最大字节数
+		int bufferLength = keyLength / 8;
+		
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 		try {
@@ -289,17 +368,15 @@ public final class RSA {
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			
 			byte[] cache = null;
-			byte[] buffer = new byte[128];
-			int offSet = 0;
-			for (int i = 0; ; i++) {
+			byte[] buffer = new byte[bufferLength];
+			while (true) {
 				int readCount = fis.read(buffer);
 				DebugLog.d(TAG, "readCount = " + readCount);
 				if (readCount == -1) {
 					break;
 				} else {
-					cache = cipher.doFinal(buffer, offSet, readCount);
+					cache = cipher.doFinal(buffer, 0, readCount);
 					fos.write(cache);
-					offSet = i * 128;
 				}
 			}
 			return true;
