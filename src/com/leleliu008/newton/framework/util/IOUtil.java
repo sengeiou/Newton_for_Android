@@ -114,7 +114,7 @@ public final class IOUtil {
 		readTextFileByLine(new InputStreamReader(is), callback);
 	}
 	
-	public static String readTextFile(Reader reader) throws IOException {
+	public static String readTextFile(Reader reader) {
 		if (reader == null) {
 			return "";
 		}
@@ -128,6 +128,8 @@ public final class IOUtil {
 			while ((lineStr = bReader.readLine()) != null) {
 				stringBuilder.append(lineStr).append('\n');
 			}
+		} catch(IOException e) {
+			DebugLog.e(TAG, "readTextFile()", e);
 		} finally {
 			if (bReader != null) {
 				try {
@@ -144,15 +146,19 @@ public final class IOUtil {
 	 * 读取文本文件
 	 * @param file 文本文件
 	 * @return     文件内容
-	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public static String readTextFile(File file) throws FileNotFoundException, IOException {
+	public static String readTextFile(File file) {
 		if (file == null) {
 			return null;
 		}
 		
-		return readTextFile(new FileReader(file));
+		try {
+			return readTextFile(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			DebugLog.e(TAG, "readTextFile()", e);
+			return "";
+		}
 	}
 	
 	/**
@@ -161,7 +167,7 @@ public final class IOUtil {
 	 * @return     文件内容
 	 * @throws IOException 
 	 */
-	public static String readTextFile(InputStream is) throws IOException {
+	public static String readTextFile(InputStream is) {
 		if (is == null) {
 			return null;
 		}

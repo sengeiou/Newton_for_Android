@@ -17,8 +17,9 @@ import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.business.account.RequestConfiguration;
 import com.leleliu008.newton.business.config.Configuration;
 import com.leleliu008.newton.framework.data.KV;
-import com.leleliu008.newton.framework.security.AES;
+import com.leleliu008.newton.framework.security.SymmetricalEncryption;
 import com.leleliu008.newton.framework.security.Base64;
+import com.leleliu008.newton.framework.security.SymmetricalEncryption.Algorithm;
 import com.leleliu008.newton.framework.storage.AzureStorage;
 import com.leleliu008.newton.framework.upload.UploadData;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -264,7 +265,7 @@ final class UploadBinder extends IUploadManager.Stub {
 		}
 		
 		Charset charset = Charset.forName("utf-8");
-		String result = new String(AES.decrypt(Base64.decode(azure.getBytes(charset)), MyApp.getApp().a().getBytes(charset)));
+		String result = new String(SymmetricalEncryption.decrypt(Algorithm.AES, Base64.decode(azure.getBytes(charset)), MyApp.getApp().a().getBytes(charset)));
 		String[] result2 = result.split("\\|");
 		accountName = result2[0];
 		String key = result2[1];

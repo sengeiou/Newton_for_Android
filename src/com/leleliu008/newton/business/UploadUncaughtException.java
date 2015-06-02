@@ -71,7 +71,11 @@ public final class UploadUncaughtException {
 				File uploadedUncaughtExceptionFile = new File(uncaughtExceptionFile.getAbsoluteFile() + ".uploaded");
 				if (uploadedUncaughtExceptionFile.exists()) {
 					uncaughtExceptionFile.delete();
-					IOUtil.writeFile(uploadedUncaughtExceptionFile, uncaughtException, true);
+					try {
+						IOUtil.writeFile(uploadedUncaughtExceptionFile, uncaughtException, true);
+					} catch (Exception e) {
+						DebugLog.e(getClass().getSimpleName(), "onFinish()", e);
+					}
 				} else {
 					uncaughtExceptionFile.renameTo(uploadedUncaughtExceptionFile);
 				}
@@ -79,7 +83,12 @@ public final class UploadUncaughtException {
 				File uploadedHttpExceptionFile = new File(httpExceptionFile.getAbsoluteFile() + ".uploaded");
 				if (uploadedHttpExceptionFile.exists()) {
 					httpExceptionFile.delete();
-					IOUtil.writeFile(uploadedHttpExceptionFile, httpException, true);
+					
+					try {
+						IOUtil.writeFile(uploadedHttpExceptionFile, httpException, true);
+					} catch (Exception e) {
+						DebugLog.e(getClass().getSimpleName(), "onFinish()", e);
+					}
 				} else {
 					httpExceptionFile.renameTo(uploadedHttpExceptionFile);
 				}
