@@ -6,10 +6,9 @@ LOCAL_SRC_FILES  := newton/newton.cpp
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
-
-LAME_LIBMP3_DIR := mp3lame/lame-3.98.4_libmp3lame
-
-LOCAL_MODULE    := mp3lame
+LAME_MODULE_DIR := mp3lame
+LAME_LIBMP3_DIR := $(LAME_MODULE_DIR)/lame-3.98.4_libmp3lame
+LOCAL_MODULE    := pcm2mp3
 LOCAL_SRC_FILES := $(LAME_LIBMP3_DIR)/bitstream.c \
                    $(LAME_LIBMP3_DIR)/fft.c \
                    $(LAME_LIBMP3_DIR)/id3tag.c \
@@ -30,6 +29,6 @@ LOCAL_SRC_FILES := $(LAME_LIBMP3_DIR)/bitstream.c \
                    $(LAME_LIBMP3_DIR)/takehiro.c \
                    $(LAME_LIBMP3_DIR)/vbrquantize.c \
                    $(LAME_LIBMP3_DIR)/version.c \
-                   mp3lame/MP3Encoder.c
+                   $(LAME_MODULE_DIR)/pcm2mp3.c
                    
 include $(BUILD_SHARED_LIBRARY)
