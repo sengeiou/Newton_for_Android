@@ -9,7 +9,7 @@ package com.leleliu008.newton.base.audio;
 public final class PCM2MP3 {
 
 	static {
-		System.load("pcm2mp3");
+		System.loadLibrary("pcm2mp3");
 	}
 	
 	private PCM2MP3() { }
@@ -37,4 +37,13 @@ public final class PCM2MP3 {
 	 * @return  释放资源成功后者失败
 	 */
 	public native boolean destroy();
+	
+	/**
+	 * 将PCM格式的文件转换成MP3格式的文件
+	 * 
+	 * @param pcmFilePath  PCM格式的文件路径
+	 * @param mp3FilePath  MP3格式的文件路径
+	 * @return             是否转换成功
+	 */
+	public static native boolean convert(String pcmFilePath, String mp3FilePath);
 }

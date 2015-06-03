@@ -31,6 +31,14 @@ JNIEXPORT jbyteArray JNICALL Java_com_leleliu008_newton_base_audio_PCM2MP3_encod
 JNIEXPORT jboolean JNICALL Java_com_leleliu008_newton_base_audio_PCM2MP3_destroy
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_leleliu008_newton_base_audio_PCM2MP3
+ * Method:    convert
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_leleliu008_newton_base_audio_PCM2MP3_convert
+  (JNIEnv *, jclass, jstring, jstring);
+
 #ifdef __cplusplus
 }
 #endif
