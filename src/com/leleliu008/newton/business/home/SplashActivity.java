@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import cn.jpush.android.api.JPushInterface;
 
+import com.leleliu008.newton.BackgroudService;
 import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
@@ -73,6 +74,9 @@ public final class SplashActivity extends Activity {
 
 		// 检测自动登录
 		UserManager.getInstance().autoLogin();
+		
+		//启动后天进程
+		startService(new Intent(this, BackgroudService.class));
 	}
 
 	@Override

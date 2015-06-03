@@ -257,13 +257,30 @@
             android:process=":remote" >
         </service>
 
-		<receiver android:name=".framework.phone.PhoneStateReceiver" >
-		    <intent-filter>
-		        <action android:name="android.intent.action.PHONE_STATE" />
-		        <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
-		    </intent-filter>
-		</receiver>
-        
+        <receiver
+            android:name=".framework.phone.PhoneStateReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":background" >
+            <intent-filter android:priority="0x7fffffff" >
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".StartUpReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":background" >
+            <intent-filter android:priority="0x7fffffff" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".BackgroudService"
+            android:enabled="true"
+            android:process=":background" />
     </application>
 
     <!-- 百度地图的权限 -->
