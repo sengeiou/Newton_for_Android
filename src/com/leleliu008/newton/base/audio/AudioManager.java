@@ -2,7 +2,6 @@ package com.leleliu008.newton.base.audio;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -110,16 +109,17 @@ public final class AudioManager {
 			in = new FileInputStream(pcmFile);
 			out = new FileOutputStream(wavFile);
 
-			int totalAudioLen = (int) in.getChannel().size();
-			int totalDataLen = totalAudioLen + 36;
+			int totalAudioLen = (int) pcmFile.length();
+			int totalDataLen = totalAudioLen + 44;
 			
 			// 写入头
 			out.write(getWAVHeader(totalAudioLen, totalDataLen, sampleRate, sampleBit, channels));
-
-			byte[] data = new byte[1024];
+			
+			int readCount = 0;
+			byte[] buffer = new byte[1024];
 			// 写入PCM数据
-			while (in.read(data) != -1) {
-				out.write(data);
+			while ((readCount = in.read(buffer)) != -1) {
+				out.write(buffer, 0, readCount);
 			}
 		} catch (Exception e) {
 			DebugLog.e(TAG, "convertPCM2WAV()", e);
@@ -165,8 +165,9 @@ public final class AudioManager {
 	 * @param wavFile   WAV文件
 	 */
 	public int getWavDuration(File wavFile) {
+		RandomAccessFile randomAccessFile = null;
 		try {
-			RandomAccessFile randomAccessFile = new RandomAccessFile(wavFile, "r");
+			randomAccessFile = new RandomAccessFile(wavFile, "r");
 			byte[] head = IOUtil.read(randomAccessFile, 0, 44);
 
 			byte[] sampleRateBytes = { head[24], head[25], head[26], head[27] };
@@ -187,8 +188,16 @@ public final class AudioManager {
 			DebugLog.d(TAG, "totalAudioLen = " + totalAudioLen);
 			
 			return getWavDuration(totalAudioLen, byteRate);
-		} catch (FileNotFoundException e) {
-			DebugLog.e(TAG, "convertPCM2WAV()", e);
+		} catch (Exception e) {
+			DebugLog.e(TAG, "getWavDuration()", e);
+		} finally {
+			if (randomAccessFile != null) {
+				try {
+					randomAccessFile.close();
+				} catch (IOException e) {
+					DebugLog.e(TAG, "getWavDuration()", e);
+				}
+			}
 		}
 		return 0;
 	}
