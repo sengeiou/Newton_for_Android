@@ -13,6 +13,7 @@ import android.view.ViewGroup;
  */
 public final class ViewHolder {
 
+	/** 条目对应的视图 */
 	private View convertView;
 	
 	private SparseArray<View> widgetViews;
