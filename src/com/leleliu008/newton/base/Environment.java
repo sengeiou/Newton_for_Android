@@ -368,8 +368,7 @@ public final class Environment {
     public StringBuilder getAllInfo() {
     	StringBuilder info = new StringBuilder();
     	
-    	@SuppressWarnings("rawtypes")
-		Class clazz = null;
+		Class<?> clazz = null;
         try {
 			clazz = Class.forName("android.os.Build");
 		} catch (ClassNotFoundException ex) {
