@@ -134,7 +134,7 @@ public class IndividualCenterFragment extends BaseFragment implements
 		items.add(new SettingItem(POSITION_RANK, context.getResources()
 				.getDrawable(R.drawable.ic_rank_black), getResources().getString(R.string.myIntegralFragment_title)));
 		items.add(new SettingItem(POSITION_BALANCE, context.getResources()
-				.getDrawable(R.drawable.ic_balance_black), getResources().getString(R.string.myBalanceFragment_title)));
+				.getDrawable(R.drawable.ic_balance_black), getResources().getString(R.string.aboutus)));
 		items.add(new SettingItem(POSITION_TASK, context.getResources()
 				.getDrawable(R.drawable.ic_task_black), getResources().getString(R.string.myTaskFragment_title)));
 

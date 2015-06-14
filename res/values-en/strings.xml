@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-	<string name="title">Title:</string>
-    <!-- 登录  -->
-   
-
     <!-- 自定义Dialog -->
     <string name="title_alert">Notice</string>
     <string name="ok">OK</string>
@@ -17,21 +12,6 @@
     <string name="dialog_again_record">Cancel?</string>
     <string name="dialog_refresh_apk_title">Upgrade notice</string>
     <string name="dialog_refresh_data_ok">Update</string>
-    <string name="dialog_login_return">Haven\'t logged in. Log in now?</string>
-    <string name="corpus_info">Datatang Mobile Crowd-Sourcing Platform Corpus</string>
-    <string name="aboutus_question1">1、What is Zhongketang?</string>
-    <string name="aboutus_question2">2、Why do I have to fill in so much personal information? Are they safe here?</string>
-    <string name="aboutus_question3">3、Why haven\'t I received money? friends have been asking lately, "I have completed my task, but not yet received any payment to my Alipay"?</string>
-    <string name="aboutus_question4">4、Is there any quota of people?</string>
-    <string name="aboutus_answer1">\u3000 Answer: Zhongketang is the first domestic professional data crowdsourcing platform, which enables you to earn money easily during free time.  You will receive cash payment by completing below simple tasks through mobile phone: open your APP, complete the registration and select your favored tasks at task lobby (e.g. you can choose to finish a recording of Cantonese or Sichuan dialect; and we have more tasks ready for you if dialect is not your advantage. For example, taking photos for image capture, uploading a schedule arrangement, sharing your wireless hotspots, etc. With these tasks completed, you will receive cash reward easily! Move your figunre and earn cash reward, these are real payment! (which can be transferred to your aplipay accont) You can also get the payment through cash withdrawal.</string>
-    <string name="aboutus_answer2">\u3000 Answer: rest assured, your personal information is required for better task recommendation, and they are 100% safe here. However, if there is any fake information or cheating, Zhongketang has the right to cancel or confiscate the credits and cash reward provided for you.</string>
-    <string name="aboutus_answer3">\u3000 Answer: a kind reminder: your task will go through a system verification after it is submitted. In order to get your payment, please click "withdrawal application " in your zhongketang account after the verification is finished. It\'s easy, right? Now feel free to bring your phone and go for it!</string>
-    <string name="aboutus_answer4">\u3000 Answer: there are quota of people for every task with different limits. </string>
-
-    <!-- 第三方登录分享 -->
-    <string name="title_activity_return">ReturnActivity</string>
-    <string name="result">All your tasks have been uploaded successfully！</string>
-    <string name="withdraw_text">(1).Withdrawal application once only per day; \n(2).If your last withdrawal application is not finished, please do not apply again;\n(3). And you will receive payment in 2-3 work days,  please be patient;</string>
 
     <!-- 网络连接检测 -->
     <string name="pull_to_refresh">Pull down to refresh</string>
@@ -41,17 +21,11 @@
     <string name="release_to_load">Release to load</string>
     <string name="loading">Loading...</string>
 
-    <!-- 任务执行界面的hint信息汇总 -->
-    <string name="input_agent">Please provide schedule information</string>
-
-    <!-- 上传网络的判断 -->
-    <string name="upload_judge_network">You are under cellular network, not WIFI, confirm to upload?</string>
-
     <!-- 提示框 -->
     <string name="dialog_default_title">Here\'s a message!</string>
 
     <!-- 登录 -->
-     <string name="login_bt">Log in</string>
+    <string name="login_bt">Log in</string>
     <string name="account_name">Phone number/user name</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="login_password_enter">Enter password</string>
@@ -61,7 +35,6 @@
     <string name="login_account_not_exist">Account doesn\'t exist</string>
     <string name="login_password_error">Incorrect password</string>
     <string name="login_later">Our server is under maintenance, please visit later</string>
-    <string name="login_check_tips">Remember username and password</string>
     <string name="empty_account">Account number cannot be empty</string>
     <string name="empty_password">Password cannot be empty</string>
 
@@ -166,16 +139,6 @@
     <string name="bindPhoneNumberFragment_security_code_error">Incorrect verification code</string>
     <string name="bindPhoneNumberFragment_get_security_code_error">Failed to obtain verification code</string>
 
-    <!-- 绑定支付宝号 -->
-    <string name="bindWithdrawFragment_bind_phoneum">Please bind phone number first</string>
-    <string name="bindWithdrawFragment_bind_idcard">Please input ID number correctly</string>
-    <string name="bindWithdrawFragment_alipay_isEmpty">Alipay account can not be empty</string>
-    <string name="bindWithdrawFragment_bind_alipay_error">Please bind correct alipay account</string>
-    <string name="bindWithdrawFragment_bind_realName">Please input your real name</string>
-    <string name="bindWithdrawFragment_bind_alipay_succeed">Bind successfully</string>
-    <string name="bindWithdrawFragment_bind_alipay_fail">Binding failed</string>
-    <string name="bindWithdrawFragment_send_security_code">Verification code will be sent to:</string>
-
     <!-- 个人中心 -->
     <string name="individualCenterFragment_title">My page</string>
 
@@ -196,11 +159,6 @@
     <string name="modifyPasswordFragment_succeed">Modification succeed</string>
     <string name="modifyPasswordFragment_fail">Modification failed</string>
 
-    <!-- 我的余额 -->
-    <string name="myBalanceFragment_title">My balance</string>
-    <string name="myBalanceFragment_bind_alipay">Please bind alipay account</string>
-    <string name="myBalanceFragment_withdraw_quota">Please withdraw > {0} RMB</string>
-
     <!-- 我的积分 -->
     <string name="myIntegralFragment_title">My credit</string>
 
@@ -216,33 +174,8 @@
 
     <!-- 我的任务 -->
     <string name="myTaskFragment_title">My task</string>
-    <string name="myTaskFragment_refresh_succeed">Refresh successfully</string>
-    <string name="myTaskFragment_refresh_fail">Failed to refresh</string>
-    <string name="myTaskFragment_load_succeed">Load successfully</string>
-    <string name="myTaskFragment_load_fail">Failed to load</string>
-    <string name="myTaskFragment_load_all">Fully loaded</string>
-    <string name="myTaskFragment_task_checking">Current task is under QA</string>
-    <string name="myTaskFragment_task_finish">Task is completed</string>
-    <string name="myTaskFragment_notApply">Not applied</string>
-    <string name="myTaskFragment_underWay">In progress</string>
-    <string name="myTaskFragment_waitAudit">Waiting for QA</string>
-    <string name="myTaskFragment_finished">Completed</string>
-    <string name="myTaskFragment_have_to_receive_amount">Assigned</string>
-    <string name="myTaskFragment_current_get_work">Obtaining my task</string>
-    <string name="myTaskFragment_update_in_progress">Updating task list</string>
-    <string name="myTaskFragment_abnormal_server">Failed to update. Server error!</string>
     <string name="task_todo">Unfinished task</string>
     <string name="task_done">Completed tasks</string>
-
-    <!-- 申请提现 -->
-    <string name="withdrawBalanceFragment_title">Withdrawal</string>
-    <string name="withdrawBalanceFragment_amount_isEntity">Amount cannot be empty</string>
-    <string name="withdrawBalanceFragment_amount_illegal">Invalid amount</string>
-    <string name="withdrawBalanceFragment_withdraw_upper_limit">notice: maximum withdrawal amount is {0} RMB</string> 
-    <string name="withdrawBalanceFragment_withdraw_lower_limit">Minimum withdrawal amount is  {0}, thank you for your support!</string>
-    <string name="withdrawBalanceFragment_insufficient_balance">Hello, your balance is insufficient to withdraw. Thank you for your support!</string>
-    <string name="withdrawBalanceFragment_withdraw_succeed">Withdrawal succeeded</string>
-    <string name="withdrawBalanceFragment_withdraw_fail">Withdrawal failed</string>
 
     <!-- 时间控件 -->
     <string name="year">Year</string>
@@ -297,14 +230,14 @@
     <string name="net_disconnected">Poor network. Please check and try again!</string>
 
     <!-- 拍照模块 -->
-   <string name="image_str_add_group_info">Press button to add image. Be sure the number of image in each set is no less then {0} and no more than {1}.</string>
+    <string name="image_str_add_group_info">Press button to add image. Be sure the number of image in each set is no less then {0} and no more than {1}.</string>
     <string name="image_str_add_group">+ Add group</string>
     <string name="image_str_upload_current_group">Upload this group</string>
     <string name="image_str_upload_all">Upload all images</string>
     <string name="image_pictures_failed">Photo taken failed</string>
     <string name="image_yes">Yes</string>
     <string name="image_no">No</string>
-    <string name="image_select_images_not_exist">Selected image does not exist</string>	
+    <string name="image_select_images_not_exist">Selected image does not exist</string>
     <string name="image_group_upper_limit">Reached the maximum number of group. Cannot add more.</string>
     <string name="image_select_images_not_upload">Picture is not uploaded. Cannot be saved if you exit. Are you sure to exit?</string>
     <string name="image_group_statistics">Current group NO. {0}\n Shooting condition：Toal Group: {1}, total images: {2}.</string>
@@ -343,11 +276,10 @@
     <string name="error_msg00">Valid recording. Please record the next one.</string>
     <string name="error_msg01">Your volume is too loud, please lower your voice or stay far away from your phone</string>
     <string name="error_msg02">Your volume is too low, please raise your voice or stay closer to your phone</string>
-    <string name="record_finish">After the end of the recording can click Finish</string> 
-    
-    
-    	<!--翻译太长-->
-    	<string name="error_msg03">Please begin to record right after the countdown is finished</string>
+    <string name="record_finish">After the end of the recording can click Finish</string>
+
+    <!-- 翻译太长 -->
+    <string name="error_msg03">Please begin to record right after the countdown is finished</string>
     <string name="error_msg04">Please confirm your recording is completed beforing press on "stop"</string>
     <string name="error_msg05">Have been waiting too long, please begin to record right after the countdown is finished</string>
     <string name="error_msg06">Have been waiting too long, please click "stop" right after your recording is completed</string>
@@ -366,7 +298,7 @@
     <string name="ResultDialog_open">Open</string>
 
     <!-- 第三方 -->
-     <string name="third_party_share">Share</string>
+    <string name="third_party_share">Share</string>
     <string name="third_party_share_to">Share to：</string>
     <string name="third_party_weixin">Wechat</string>
     <string name="third_party_qq">QQ</string>
@@ -382,16 +314,16 @@
     <!-- 选择照片 -->
     <string name="imageChooseDialog_open_carmera">Turn on camera</string>
     <string name="imageChooseDialog_select_album">Select photo album</string>
-    
+
     <!-- 功能菜单 -->
     <string name="home_menu_decoding">Decode QR Code</string>
     <string name="home_menu_scanned">Scan QR Code</string>
     <string name="home_menu_download">Download App</string>
     <string name="home_menu_rebate">Rebate</string>
     <string name="home_menu_nearby">Nearby</string>
-    
     <string name="home_save_qr_code">Save the qr code to</string>
     <string name="home_mobile_scanner">Android mobile phone to scan two-dimensional code to download zhongketang</string>
     <string name="home_scanner_redcord">Let others use the micro channel scan the page in a red two-dimensional code, and download the zhongketang application treasure, will have the opportunity to get a micro channel payment envelopes, specific rules are as follows:</string>
-	<string name="finish">Finish</string>
+    <string name="finish">Finish</string>
+
 </resources>

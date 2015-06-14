@@ -46,13 +46,13 @@ public final class HelpFragment extends BaseFragment {
 
 		List<Map<String, String>> groups = new ArrayList<Map<String, String>>();
 		Map<String, String> group1 = new HashMap<String, String>();
-		group1.put("group", getString(R.string.aboutus_question1));
+		group1.put("group", getString(R.string.aboutus));
 		Map<String, String> group2 = new HashMap<String, String>();
-		group2.put("group", getString(R.string.aboutus_question2));
+		group2.put("group", getString(R.string.aboutus));
 		Map<String, String> group3 = new HashMap<String, String>();
-		group3.put("group", getString(R.string.aboutus_question3));
+		group3.put("group", getString(R.string.aboutus));
 		Map<String, String> group4 = new HashMap<String, String>();
-		group4.put("group", getString(R.string.aboutus_question4));
+		group4.put("group", getString(R.string.aboutus));
 		groups.add(group1);
 		groups.add(group2);
 		groups.add(group3);
@@ -60,22 +60,22 @@ public final class HelpFragment extends BaseFragment {
 
 		List<Map<String, String>> child1 = new ArrayList<Map<String, String>>();
 		Map<String, String> child1data1 = new HashMap<String, String>();
-		child1data1.put("child", getString(R.string.aboutus_answer1));
+		child1data1.put("child", getString(R.string.aboutus));
 		child1.add(child1data1);
 
 		List<Map<String, String>> child2 = new ArrayList<Map<String, String>>();
 		Map<String, String> child1data2 = new HashMap<String, String>();
-		child1data2.put("child", getString(R.string.aboutus_answer2));
+		child1data2.put("child", getString(R.string.aboutus));
 		child2.add(child1data2);
 
 		List<Map<String, String>> child3 = new ArrayList<Map<String, String>>();
 		Map<String, String> child1data3 = new HashMap<String, String>();
-		child1data3.put("child", getString(R.string.aboutus_answer3));
+		child1data3.put("child", getString(R.string.aboutus));
 		child3.add(child1data3);
 
 		List<Map<String, String>> child4 = new ArrayList<Map<String, String>>();
 		Map<String, String> child1data4 = new HashMap<String, String>();
-		child1data4.put("child", getString(R.string.aboutus_answer4));
+		child1data4.put("child", getString(R.string.aboutus));
 		child4.add(child1data4);
 
 		List<List<Map<String, String>>> childs = new ArrayList<List<Map<String, String>>>();
