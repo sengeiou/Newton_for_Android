@@ -47,7 +47,10 @@ public class CustomToast {
 		float[] outerR = new float[] { r, r, r, r, r, r, r, r };
 		RoundRectShape rr = new RoundRectShape(outerR, null, null);
 		ShapeDrawable drawable = new ShapeDrawable(rr);
-		//drawable.getPaint().setColor(Color.parseColor("#ff8c00"));
+		drawable.getPaint().setColor(Color.BLACK);
+		
+		int a = UIUtil.dip2px(context, 10);
+		drawable.setPadding(a, a, a, a);
 		
 		rootView.setBackgroundDrawable(drawable);
 	}
