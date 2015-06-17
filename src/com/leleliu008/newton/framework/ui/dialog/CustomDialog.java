@@ -323,7 +323,7 @@ public class CustomDialog extends Dialog {
 	 * 设置Window的宽度
 	 * @param width 宽度
 	 */
-	public void setWindowWidth(int width) {
+	public final void setWindowWidth(int width) {
 		this.width = width;
 	}
 	
@@ -331,7 +331,7 @@ public class CustomDialog extends Dialog {
 	 * 设置Window的高度
 	 * @param width 高度
 	 */
-	public void setWindowHeight(int height) {
+	public final void setWindowHeight(int height) {
 		this.heidht = height;
 	}
 	
@@ -339,11 +339,17 @@ public class CustomDialog extends Dialog {
 	 * 设置Window的模糊效果
 	 * @param dimAmount  模糊程度
 	 */
-	public void setDim(float dimAmount) {
+	public final void setDim(float dimAmount) {
 		this.dimAmount = dimAmount;
 	}
 	
 	public final Activity getActivity() {
 		return activity;
+	}
+	
+	public final void runOnUiThread(Runnable runnable) {
+		if (activity != null && !activity.isFinishing()) {
+			activity.runOnUiThread(runnable);
+		}
 	}
 }
