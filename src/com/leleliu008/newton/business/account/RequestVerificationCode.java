@@ -4,8 +4,8 @@ import org.json.JSONObject;
 
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostJson;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求获取验证码
@@ -13,34 +13,20 @@ import com.leleliu008.newton.framework.net.RequestResult;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-public final class RequestVerificationCode extends RequestPostJson<RequestResult> {
+public final class RequestVerificationCode {
 
-	/** 类型 - 用以区分这个验证码是用在哪儿 */
-	private int type;
+	private static final String TAG = RequestVerificationCode.class.getSimpleName();
 	
-	/** 收取验证码的手机号 */
-	private String phoneNumber;
-
-	public RequestVerificationCode(int type, String phoneNumber) {
-		this.type = type;
-		this.phoneNumber = phoneNumber;
-	}
-
-	@Override
-	public RequestResult request() {
-		String tag = getTag();
-		
-		DebugLog.d(tag, "request()");
-
+	public static void requestVerificationCode(int type, String phoneNumber, RequestCallback<String> callback) {
 		JSONObject jsonObject = new JSONObject();
 		
 		try {
 			jsonObject.put("type", type);
 			jsonObject.put("recipient", phoneNumber);
 		} catch (Exception e) {
-			DebugLog.e(tag, "request()", e);
+			DebugLog.e(TAG, "request()", e);
 		}
-
-		return post(UrlConfig.registerGetVerificationUrl, jsonObject, null);
+		
+		HttpClientRequest.postJson(UrlConfig.registerGetVerificationUrl, null, jsonObject.toString(), String.class, callback);
 	}
 }

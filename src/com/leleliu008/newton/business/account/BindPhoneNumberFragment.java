@@ -19,9 +19,8 @@ import android.widget.TextView;
 
 import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.Environment;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.sms.SmsContent;
 import com.leleliu008.newton.framework.sms.SmsContentChangeCallback;
 import com.leleliu008.newton.framework.ui.drawable.StateList;
@@ -134,24 +133,21 @@ public final class BindPhoneNumberFragment extends BaseFragment implements
 			}, 1000, 1000);// 定时任务
 
 			// 请求验证码
-			RequestServerManager.asyncRequest(0, new RequestVerificationCode(2,
-					phoneNumber), new RequestFinishCallback<RequestResult>() {
-
+			RequestVerificationCode.requestVerificationCode(2, phoneNumber, new RequestCallback<String>() {
+				
 				@Override
-				public void onFinish(RequestResult result) {
-					if (!result.isSuccessful()) {
-						String text = getResources()
-								.getString(
-										R.string.bindPhoneNumberFragment_get_security_code_error);
+				public void callback(String result, RequestStatus status) {
+					String text = getResources()
+							.getString(
+									R.string.bindPhoneNumberFragment_get_security_code_error);
 
-						String discription = result.getDiscription();
-						if (!TextUtils.isEmpty(discription)) {
-							text = text + " : " + discription;
-						}
-						postShowToast(text);
-						postMessage(MSG_REQUEST_VERIFICATION_CODE_FINISHED,
-								null);
+					String discription = status.getHttpDescription();
+					if (!TextUtils.isEmpty(discription)) {
+						text = text + " : " + discription;
 					}
+					postShowToast(text);
+					postMessage(MSG_REQUEST_VERIFICATION_CODE_FINISHED,
+							null);
 				}
 			});
 			break;
@@ -163,38 +159,35 @@ public final class BindPhoneNumberFragment extends BaseFragment implements
 			}
 
 			// 先验证验证码是否正确
-			RequestServerManager.asyncRequest(0,
-					new RequestCheckVerificationCode(2, phoneNumber,
-							verificationCode),
-					new RequestFinishCallback<RequestResult>() {
-
-						@Override
-						public void onFinish(RequestResult result) {
-							if (result.isSuccessful()) {
-								UserInfo userInfo = UserManager.getInstance()
-										.getUserInfo();
-								RequestResult businessResult = RequestServerManager
-										.syncRequest(new RequestBindPhoneNumber(
-												phoneNumber, userInfo
-														.getUserName()));
-								if (businessResult.isSuccessful()) {
+			RequestCheckVerificationCode.requestCheckVerificationCode(2, phoneNumber, verificationCode, new RequestCallback<String>() {
+				
+				@Override
+				public void callback(String result, RequestStatus status) {
+					if (status.getHttpStatusCode() == 200) {
+						UserInfo userInfo = UserManager.getInstance().getUserInfo();
+						RequestBindPhoneNumber.requestBindPhoneNumber(phoneNumber, userInfo.getUserName(), new RequestCallback<String>() {
+							
+							@Override
+							public void callback(String result, RequestStatus status) {
+								if (status.getHttpStatusCode() == 200) {
 									postFinish();
 								} else {
 									String text = getResources()
 											.getString(
 													R.string.bindPhoneNumberFragment_get_security_code_error);
-									String discription = businessResult
-											.getDiscription();
+									String discription = status.getHttpDescription();
 									if (!TextUtils.isEmpty(discription)) {
 										text = text + " : " + discription;
 									}
 									postShowToast(text);
 								}
-							} else {
-								postShowToast(R.string.bindPhoneNumberFragment_security_code_error);
 							}
-						}
-					});
+						});
+					} else {
+						postShowToast(R.string.bindPhoneNumberFragment_security_code_error);
+					}
+				}
+			});
 			break;
 		default:
 			break;

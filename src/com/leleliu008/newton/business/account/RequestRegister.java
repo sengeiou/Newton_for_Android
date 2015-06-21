@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostNameValuePair;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求注册
@@ -16,27 +15,9 @@ import com.leleliu008.newton.framework.net.RequestResult;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-public class RequestRegister extends RequestPostNameValuePair<RequestResult> {
+public final class RequestRegister {
 
-	/** 用户名 */
-	private String userName;
-	
-	/** 密码 */
-	private String password;
-	
-	/** 邮箱 */
-	private String email;
-
-	public RequestRegister(String userName, String password, String email) {
-		this.userName = userName;
-		this.password = password;
-		this.email = email;
-	}
-
-	@Override
-	public RequestResult request() {
-		DebugLog.d(getTag(), "request()");
-
+	public static void requestRegister(String userName, String password, String email, RequestCallback<String> callback) {
 		// 如果是Post提交可以将参数封装到集合中传递
 		List<BasicNameValuePair> dataList = new ArrayList<BasicNameValuePair>();
 		dataList.add(new BasicNameValuePair("personfrom", "mobile"));
@@ -44,6 +25,6 @@ public class RequestRegister extends RequestPostNameValuePair<RequestResult> {
 		dataList.add(new BasicNameValuePair("account", userName));
 		dataList.add(new BasicNameValuePair("email", email));
 		
-		return post(UrlConfig.registerUrl, dataList);
+		HttpClientRequest.postForm(UrlConfig.registerUrl, null, dataList, String.class, callback);;
 	}
 }

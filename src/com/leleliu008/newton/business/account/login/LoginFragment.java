@@ -242,7 +242,7 @@ public final class LoginFragment extends BaseFragment implements OnClickListener
 			
 			@Override
 			public void onLoginFail(LoginResult loginResult) {
-				String error = loginResult.getDiscription();
+				String error = "";
 				if (TextUtils.isEmpty(error)) {
 					error = resources.getString(R.string.login_fail);
 				} else if ("access_denied".equals(error)) {

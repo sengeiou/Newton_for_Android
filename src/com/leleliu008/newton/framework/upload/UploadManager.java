@@ -1,9 +1,6 @@
 package com.leleliu008.newton.framework.upload;
 
 import java.io.File;
-import java.util.List;
-
-import org.apache.http.entity.mime.FormBodyPart;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,7 +12,6 @@ import android.text.TextUtils;
 
 import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.base.DebugLog;
-import com.leleliu008.newton.framework.net.RequestServerManager;
 import com.leleliu008.newton.framework.upload.service.IUploadManager;
 
 
@@ -132,24 +128,5 @@ public final class UploadManager {
 		} catch (RemoteException e) {
 			DebugLog.e(TAG, "addData()", e);
 		}
-	}
-	
-	/**
-	 * MultiPart上传，不需要登录验证
-	 * @param formBodyParts 上传的Part集合
-	 * @return              上传结果
-	 */
-	public static UploadResult syncUpload(List<FormBodyPart> formBodyParts) {
-		return RequestServerManager.syncRequest(new RequestUploadMultipart(formBodyParts));
-	}
-	
-	/**
-	 * MultiPart上传，需要登录验证
-	 * @param formBodyParts 上传的Part集合
-	 * @param authorization 验证信息
-	 * @return              上传结果
-	 */
-	public static UploadResult syncUpload(List<FormBodyPart> formBodyParts, String authorization) {
-		return RequestServerManager.syncRequest(new RequestUploadMultipart(formBodyParts, authorization));
 	}
 }

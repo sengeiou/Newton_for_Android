@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.account.login.LoginResult;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostJson;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求上传头像
@@ -14,40 +14,26 @@ import com.leleliu008.newton.framework.net.RequestResult;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-final class RequestModifyAvatar extends RequestPostJson<RequestResult> {
+final class RequestModifyAvatar {
+	
+	private static final String TAG = RequestModifyAvatar.class.getSimpleName();
 
-	/** 头像数据，是经过base64编码的字符串 */
-	private String avatar;
-
-	/** 用户名 */
-	private String account;
-
-	public RequestModifyAvatar(String avatar, String account) {
-		this.account = account;
-		this.avatar = avatar;
-	}
-
-	@Override
-	public RequestResult request() {
-		String tag = getTag();
-		
-		DebugLog.d(tag, "request()");
-
+	public static final void requestModifyAvatar(String avatar, String account, RequestCallback<String> callback) {
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put("avatar", avatar);
 			jsonObject.put("account", account);
 		} catch (Exception e) {
-			DebugLog.e(tag, "request()", e);
+			DebugLog.e(TAG, "requestModifyAvatar()", e);
 		}
 
 		try {
 			LoginResult loginResult = UserManager.getInstance().getLogin().getLoginResult();
 			String authorization = UrlConfig.getAuthorization(loginResult.getAccessToken());
-			return post(UrlConfig.getPostAvatarUrl, jsonObject, authorization);
+			
+			HttpClientRequest.postJson(UrlConfig.getPostAvatarUrl, authorization, jsonObject.toString(), String.class, callback);
 		} catch (Exception e) {
-			DebugLog.e(getTag(), "request()", e);
-			return new RequestResult();
+			DebugLog.e(TAG, "request()", e);
 		}
 	}
 }

@@ -13,9 +13,8 @@ import android.widget.RelativeLayout;
 
 import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.Environment;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.drawable.StateList;
 import com.leleliu008.newton.framework.ui.fragment.BaseFragment;
 
@@ -96,17 +95,16 @@ public class ModifyPasswordFragment extends BaseFragment implements OnClickListe
 				return;
 			}
 			
-			// 请求修改密码
-			RequestServerManager.asyncRequest(0, new RequestModifyPassword(oldPassword, newPassword), new RequestFinishCallback<RequestResult>() {
-
+			RequestModifyPassword.requestModifyPassword(oldPassword, newPasswordComfirm, new RequestCallback<String>() {
+				
 				@Override
-				public void onFinish(RequestResult result) {
-					if (result.isSuccessful()) {
+				public void callback(String result, RequestStatus status) {
+					if (status.getHttpStatusCode() == 200) {
 						postShowToast(R.string.modifyPasswordFragment_succeed);
 						postFinish();
 					} else {
 						String text = getResources().getString(R.string.modifyPasswordFragment_fail);
-						String discription = result.getDiscription();
+						String discription = status.getHttpDescription();
 						if (!TextUtils.isEmpty(discription)) {
 							text = text + " : " + discription;
 						}

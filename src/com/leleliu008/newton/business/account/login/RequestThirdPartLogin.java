@@ -4,7 +4,8 @@ import org.json.JSONObject;
 
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostJson;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求第三方登录
@@ -12,36 +13,11 @@ import com.leleliu008.newton.framework.net.RequestPostJson;
  * @author 792793182@qq.com 2015-03-09
  * 
  */
-final class RequestThirdPartLogin extends RequestPostJson<LoginResult> {
+final class RequestThirdPartLogin {
+	
+	private static final String TAG = RequestThirdPartLogin.class.getSimpleName();
 
-	private int type;
-	
-	private String openId = "";
-	
-	private String accessToken = "";
-	
-	private String gender = "";
-	
-	private String nickname = "";
-	
-	/** 头像URL */
-	private String avatar = "";
-
-	public RequestThirdPartLogin(int type, String openId, String accessToken, String gender, String nickname, String avatar) {
-		this.type = type;
-		this.openId = openId;
-		this.accessToken = accessToken;
-		this.gender = gender;
-		this.nickname = nickname;
-		this.avatar = avatar;
-	}
-
-	@Override
-	public LoginResult request() {
-		String tag = getTag();
-		
-		DebugLog.d(tag, "request()");
-
+	public static void requestThirdPartLogin(int type, String openId, String accessToken, String gender, String nickname, String avatar, RequestCallback<LoginResult> callback) {
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put("type", type);
@@ -51,14 +27,9 @@ final class RequestThirdPartLogin extends RequestPostJson<LoginResult> {
 			jsonObject.put("nickname", nickname);
 			jsonObject.put("avatar", avatar);
 		} catch (Exception e) {
-			DebugLog.e(tag, "request()", e);
+			DebugLog.e(TAG, "request()", e);
 		}
 
-		try {
-			return post(UrlConfig.thirdPartLoginUrl, jsonObject, "");
-		} catch (Exception e) {
-			DebugLog.e(getTag(), "request()", e);
-			return new LoginResult();
-		}
+		HttpClientRequest.postJson(UrlConfig.thirdPartLoginUrl, null, jsonObject.toString(), LoginResult.class, callback);
 	}
 }

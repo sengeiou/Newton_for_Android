@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.account.login.LoginResult;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostJson;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求修改用户信息，目前只能修改昵称，性别，城市
@@ -14,27 +14,16 @@ import com.leleliu008.newton.framework.net.RequestResult;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-class RequestModifyUserInfo extends RequestPostJson<RequestResult> {
+final class RequestModifyUserInfo {
 
+	private static final String TAG = RequestModifyUserInfo.class.getSimpleName();
+	
 	/** 修改什么 */
 	public static enum What {
 		nickName, location, gender
 	}
 
-	private What what;
-	private String newValue;
-
-	public RequestModifyUserInfo(What what, String newValue) {
-		this.what = what;
-		this.newValue = newValue;
-	}
-
-	@Override
-	public RequestResult request() {
-		String tag = getTag();
-		
-		DebugLog.d(tag, "request()");
-		
+	public static final void requestModifyUserInfo(What what, String newValue, RequestCallback<String> callback) {
 		UserInfo userInfo = UserManager.getInstance().getUserInfo();
 		if (userInfo != null) {
 			String cachedNickName = userInfo.getNickName();
@@ -65,18 +54,16 @@ class RequestModifyUserInfo extends RequestPostJson<RequestResult> {
 				jsonObject.put("location", location);
 				jsonObject.put("gender", gender);
 			} catch (Exception e) {
-				DebugLog.e(tag, "request()", e);
+				DebugLog.e(TAG, "request()", e);
 			}
 			
 			try {
 				LoginResult loginResult = UserManager.getInstance().getLogin().getLoginResult();
 				String authorization = UrlConfig.getAuthorization(loginResult.getAccessToken());
-				return post(UrlConfig.getsavePersonUrl, jsonObject, authorization);
+				HttpClientRequest.postJson(UrlConfig.getsavePersonUrl, authorization, jsonObject.toString(), String.class, callback);
 			} catch (Exception e) {
-				DebugLog.e(getTag(), "request()", e);
+				DebugLog.e(TAG, "request()", e);
 			}
 		}
-		
-		return new RequestResult();
 	}
 }

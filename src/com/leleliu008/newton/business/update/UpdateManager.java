@@ -19,8 +19,9 @@ import com.leleliu008.newton.base.ThreadPoolManager;
 import com.leleliu008.newton.business.config.UrlConfig;
 import com.leleliu008.newton.framework.download.DownLoadListener;
 import com.leleliu008.newton.framework.download.DownloaderManager;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.toast.CustomToast;
 import com.leleliu008.newton.framework.util.LauncherManager;
 
@@ -65,10 +66,10 @@ public final class UpdateManager {
 	 * @param notification
 	 */
 	public static void forceUpdate(final Context context) {
-		RequestServerManager.asyncRequest(0, new RequestVersionInfo(), new RequestFinishCallback<UpdateResult>() {
-
+		HttpClientRequest.get(UrlConfig.UPDATE_VERSION, null, UpdateResult.class, new RequestCallback<UpdateResult>() {
+			
 			@Override
-			public void onFinish(final UpdateResult result) {
+			public void callback(final UpdateResult result, RequestStatus status) {
 				if (context instanceof Activity) {
 					Activity activity = (Activity) context;
 					if (!activity.isFinishing()) {

@@ -25,8 +25,11 @@ public final class BackgroudService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		//成为前台进程
-		Notification notification = new Notification(R.string.app_name, getText(R.string.app_name),
-		        System.currentTimeMillis());
+		Notification notification = new Notification();
+		notification.icon = R.drawable.ic_logo;
+		notification.tickerText = getText(R.string.app_name);
+		notification.when = System.currentTimeMillis();
+		
 		Intent notificationIntent = new Intent(this, Home.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 		notification.setLatestEventInfo(this, getText(R.string.app_name),

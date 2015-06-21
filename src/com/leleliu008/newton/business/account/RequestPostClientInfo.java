@@ -1,6 +1,7 @@
 package com.leleliu008.newton.business.account;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.json.JSONObject;
 
@@ -11,8 +12,7 @@ import com.leleliu008.newton.business.config.Configuration;
 import com.leleliu008.newton.business.config.UrlConfig;
 import com.leleliu008.newton.framework.lbs.LBS;
 import com.leleliu008.newton.framework.lbs.XAddress;
-import com.leleliu008.newton.framework.net.RequestPostJson;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
 import com.leleliu008.newton.framework.util.Helper;
 import com.leleliu008.newton.framework.util.TestSetting;
 
@@ -22,19 +22,14 @@ import com.leleliu008.newton.framework.util.TestSetting;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-public class RequestPostClientInfo extends RequestPostJson<RequestResult> {
+public final class RequestPostClientInfo {
 
-	@Override
-	public RequestResult request() {
-		DebugLog.d(getTag(), "request()");
-		
-		return post(UrlConfig.PostTraceMessageUrl, collectClientInfo(), null);
-	}
-
+	private static final String TAG = RequestPostClientInfo.class.getSimpleName();
+	
 	/**
 	 * 收集客户端信息
 	 */
-	private JSONObject collectClientInfo() {
+	public static void requestPostClientInfo() {
 		JSONObject jsonObject = new JSONObject();
 
 		try {
@@ -49,7 +44,7 @@ public class RequestPostClientInfo extends RequestPostJson<RequestResult> {
 			jsonObject.put("osVersion", environment.getOSVersionName());
 			jsonObject.put("network", Helper.isConnectNetwork(MyApp.getApp()));
 
-			jsonObject.put("activeTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+			jsonObject.put("activeTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE).format(System.currentTimeMillis()));
 			jsonObject.put("clientIP", environment.getIPAddress());
 			jsonObject.put("remark", "");
 
@@ -61,9 +56,10 @@ public class RequestPostClientInfo extends RequestPostJson<RequestResult> {
 				jsonObject.put("clientGPS", gps);
 			}
 		} catch (Exception e) {
-			DebugLog.e(getTag(), "collectClientInfo()", e);
+			DebugLog.e(TAG, "collectClientInfo()", e);
 		}
 
-		return jsonObject;
+		HttpClientRequest.postJson(UrlConfig.PostTraceMessageUrl, null, jsonObject.toString(), String.class, null);
+		
 	}
 }

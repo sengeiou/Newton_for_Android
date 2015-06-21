@@ -27,9 +27,8 @@ import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.business.account.RequestCheckVerificationCode;
 import com.leleliu008.newton.business.account.RequestVerificationCode;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.sms.SmsContent;
 import com.leleliu008.newton.framework.sms.SmsContentChangeCallback;
 import com.leleliu008.newton.framework.ui.drawable.StateList;
@@ -141,12 +140,11 @@ public class RegisterFragment extends BaseFragment implements OnClickListener,
 				return;
 			}
 			//先校验验证码
-			RequestServerManager.asyncRequest(0, new RequestCheckVerificationCode(1, phoneNumber, verificationNumber), 
-					                             new RequestFinishCallback<RequestResult>() {
+			RequestCheckVerificationCode.requestCheckVerificationCode(1, phoneNumber, verificationNumber, new RequestCallback<String>() {
 				
 				@Override
-				public void onFinish(RequestResult result) {
-					if (result.isSuccessful()) {
+				public void callback(String result, RequestStatus status) {
+					if (status.getHttpStatusCode() == 200) {
 						postMessage(14, phoneNumber);
 					} else {
 						postShowToast(R.string.bindPhoneNumberFragment_security_code_error);
@@ -167,13 +165,12 @@ public class RegisterFragment extends BaseFragment implements OnClickListener,
 			}
 			
 			//请求验证码
-			RequestServerManager.asyncRequest(0, new RequestVerificationCode(1, phoneNumber), 
-					                             new RequestFinishCallback<RequestResult>() {
+			RequestVerificationCode.requestVerificationCode(1, phoneNumber, new RequestCallback<String>() {
 
 				@Override
-				public void onFinish(RequestResult result) {
-					if (!result.isSuccessful()) {
-						postShowToast(result.getDiscription());
+				public void callback(String result, RequestStatus status) {
+					if (status.getHttpStatusCode() != 200) {
+						postShowToast(status.getHttpDescription());
 						postMessage(11, null);// 向Handler发送消息停止继续执行
 					}
 				}

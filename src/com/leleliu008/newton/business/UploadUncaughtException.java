@@ -2,13 +2,17 @@ package com.leleliu008.newton.business;
 
 import java.io.File;
 
+import org.json.JSONObject;
+
 import android.text.TextUtils;
 
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.business.config.UrlConfig;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
+import com.leleliu008.newton.framework.upload.UploadResult;
 import com.leleliu008.newton.framework.util.IOUtil;
 
 public final class UploadUncaughtException {
@@ -43,13 +47,13 @@ public final class UploadUncaughtException {
 					return;
 				}
 				
-				RequestServerManager.asyncRequest(0, new RequestPostUncaughtException(imei, uncaughtException + httpException), 
+				postUncaughtException(imei, uncaughtException + httpException, 
 						                             new UploadFinishCallback(uncaughtExceptionFile, httpExceptionFile, uncaughtException, httpException));
 			}
 		}
 	}
 	
-	private static class UploadFinishCallback implements RequestFinishCallback<RequestResult> {
+	private static class UploadFinishCallback implements RequestCallback<UploadResult> {
 
 		private File uncaughtExceptionFile = DebugLog.getUncaughtExceptionFile();
 		private File httpExceptionFile = DebugLog.getHttpExceptionFile();
@@ -66,8 +70,8 @@ public final class UploadUncaughtException {
 		}
 		
 		@Override
-		public void onFinish(RequestResult result) {
-			if (result.isSuccessful()) {
+		public void callback(UploadResult result, RequestStatus status) {
+			if (result.getFileSize() > 0) {
 				File uploadedUncaughtExceptionFile = new File(uncaughtExceptionFile.getAbsoluteFile() + ".uploaded");
 				if (uploadedUncaughtExceptionFile.exists()) {
 					uncaughtExceptionFile.delete();
@@ -99,5 +103,18 @@ public final class UploadUncaughtException {
 	public static void saveHttpException(String requestResult) {
 		String content = DebugLog.getBaseInfo().append(requestResult).append("\n").toString();
 		DebugLog.syncSaveFile(DebugLog.FILE_HTTP_EXCEPTION_LOG, content);
+	}
+	
+	public static void postUncaughtException(String imei, String exception, UploadFinishCallback callback) {
+		JSONObject jsonObject = new JSONObject();
+		
+		try {
+			jsonObject.put("DeviceNumber", imei);
+			jsonObject.put("Error", exception);
+		} catch (Exception e) {
+			DebugLog.e("", "postUncaughtException()", e);
+		}
+		
+		HttpClientRequest.postJson(UrlConfig.POST_UNCAUGHT_EXCEPTION, null, jsonObject.toString(), UploadResult.class, callback);
 	}
 }

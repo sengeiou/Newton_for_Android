@@ -1,8 +1,6 @@
 package com.leleliu008.newton.business.account.login;
 
 
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +10,9 @@ import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.ThreadPoolManager;
-import com.leleliu008.newton.framework.net.RequestGet;
-import com.leleliu008.newton.framework.net.RequestResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.toast.CustomToast;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
@@ -86,76 +85,59 @@ final class WeixinLogin implements ILogin {
 				public void run() {
 					//获取accessToken
 		        	String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + MyApp.getApp().b() + "&secret=" + MyApp.getApp().c() + "&code=" + resp.code + "&grant_type=authorization_code";
-		        	RequestAccessTokenResult requestAccessTokenResult = new RequestAccessToken(url).request();
-		        	DebugLog.d(TAG, "requestAccessTokenResult = " + requestAccessTokenResult);
-		        	
-		        	if (requestAccessTokenResult.isSuccessful()) {
-		        		//获取用户信息
-			        	url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + requestAccessTokenResult.access_token + "&openid=" + requestAccessTokenResult.openid;
-			        	WeiXinUserInfo weiXinUserInfo = new RequestWeiXinUserInfo(url).request();
-			        	DebugLog.d(TAG, "weiXinUserInfo = " + weiXinUserInfo);
-			        	
-			        	if (weiXinUserInfo.isSuccessful()) {
-			        		LoginResult loginResult = new RequestThirdPartLogin(3, weiXinUserInfo.openid, requestAccessTokenResult.access_token, weiXinUserInfo.sex == 1 ? "男" : "女", weiXinUserInfo.nickname, weiXinUserInfo.headimgurl).request();
-			        		if (loginResult.isSuccessful()) {
-								isLogined = true;
-								WeixinLogin.this.loginResult = loginResult;
-								
-								if (callback != null) {
-									loginResult.setLoginType(LoginType.WeiXin);
-									callback.onLoginSuccess(loginResult);
-								}
-							} else {
-								if (callback != null) {
-									loginResult.setIsSuccessful(false);
-									loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-									loginResult.setDiscription("");
-									loginResult.setLoginType(LoginType.WeiXin);
-									callback.onLoginFail(loginResult);
-								}
-							}
-			        	} else {
-			        		if (callback != null) {
-								loginResult.setIsSuccessful(false);
-								loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-								loginResult.setDiscription("");
-								loginResult.setLoginType(LoginType.WeiXin);
-								callback.onLoginFail(loginResult);
+		        	HttpClientRequest.get(url, null, RequestAccessTokenResult.class, new RequestCallback<RequestAccessTokenResult>() {
+
+						@Override
+						public void callback(final RequestAccessTokenResult requestAccessTokenResult, RequestStatus status) {
+							if (status.getHttpStatusCode() == 200) {
+				        		//获取用户信息
+					        	String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + requestAccessTokenResult.access_token + "&openid=" + requestAccessTokenResult.openid;
+					        	HttpClientRequest.get(url, null, WeiXinUserInfo.class, new RequestCallback<WeiXinUserInfo>() {
+									
+									@Override
+									public void callback(WeiXinUserInfo weiXinUserInfo, RequestStatus status) {
+										if (status.getHttpStatusCode() == 200) {
+											RequestThirdPartLogin.requestThirdPartLogin(3, weiXinUserInfo.openid, requestAccessTokenResult.access_token, weiXinUserInfo.sex == 1 ? "男" : "女", weiXinUserInfo.nickname, weiXinUserInfo.headimgurl, new RequestCallback<LoginResult>() {
+												
+												@Override
+												public void callback(LoginResult loginResult, RequestStatus status) {
+													if (status.getHttpStatusCode() == 200) {
+														isLogined = true;
+														WeixinLogin.this.loginResult = loginResult;
+														
+														if (callback != null) {
+															loginResult.setLoginType(LoginType.WeiXin);
+															callback.onLoginSuccess(loginResult);
+														}
+													} else {
+														if (callback != null) {
+															loginResult.setLoginType(LoginType.WeiXin);
+															callback.onLoginFail(loginResult);
+														}
+													}
+												}
+											});
+							        	} else {
+							        		if (callback != null) {
+												loginResult.setLoginType(LoginType.WeiXin);
+												callback.onLoginFail(loginResult);
+											}
+										}
+						        	}
+								});
 							}
 						}
-		        	} else {
-		        		if (callback != null) {
-							loginResult.setIsSuccessful(false);
-							loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-							loginResult.setDiscription("");
-							loginResult.setLoginType(LoginType.WeiXin);
-							callback.onLoginFail(loginResult);
-						}
-					}
+					});
 				}
 			});
         }
-	}
-	
-	private static final class RequestAccessToken extends RequestGet<RequestAccessTokenResult> {
-
-		private String url;
-		
-		private RequestAccessToken(String url) {
-			this.url = url;
-		}
-		
-		@Override
-		public RequestAccessTokenResult request() {
-			return get(url, "");
-		}
 	}
 	
 	/**
 	 * 获取accessToken
 	 *
 	 */
-	private static final class RequestAccessTokenResult extends RequestResult {
+	private static final class RequestAccessTokenResult {
 		
 		private String access_token = "";
 		private long expires_in;
@@ -163,38 +145,6 @@ final class WeixinLogin implements ILogin {
 		private String openid = "";
 		private String scope = "";
 		private String unionid = "";
-		
-		@Override
-		public RequestAccessTokenResult parse(String jsonStr) {
-			super.parse(jsonStr);
-			
-			try {
-				JSONObject jsonObject = new JSONObject(jsonStr);
-				if (jsonObject.has("access_token")) {
-					access_token = jsonObject.getString("access_token");
-					setIsSuccessful(true);
-				}
-				if (jsonObject.has("expires_in")) {
-					expires_in = jsonObject.getLong("expires_in");
-				}
-				if (jsonObject.has("refresh_token")) {
-					refresh_token = jsonObject.getString("refresh_token");
-				}
-				if (jsonObject.has("openid")) {
-					openid = jsonObject.getString("openid");
-				}
-				if (jsonObject.has("scope")) {
-					scope = jsonObject.getString("scope");
-				}
-				if (jsonObject.has("unionid")) {
-					unionid = jsonObject.getString("unionid");
-				}
-			} catch (Exception e) {
-				DebugLog.e(TAG, "parse()", e);
-			}
-			
-			return this;
-		}
 
 		@Override
 		public String toString() {
@@ -205,21 +155,7 @@ final class WeixinLogin implements ILogin {
 		}
 	}
 	
-	private static final class RequestWeiXinUserInfo extends RequestGet<WeiXinUserInfo> {
-
-		private String url;
-		
-		private RequestWeiXinUserInfo(String url) {
-			this.url = url;
-		}
-		
-		@Override
-		public WeiXinUserInfo request() {
-			return get(url, "");
-		}
-	}
-	
-	private static final class WeiXinUserInfo extends RequestResult {
+	private static final class WeiXinUserInfo {
 
 		//普通用户的标识，对当前开发者帐号唯一
 		private String openid;
@@ -247,47 +183,6 @@ final class WeixinLogin implements ILogin {
 		
 		//用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的unionid是唯一的。
 		private String unionid;
-		
-		@Override
-		public WeiXinUserInfo parse(String jsonStr) {
-			super.parse(jsonStr);
-			
-			try {
-				JSONObject jsonObject = new JSONObject(jsonStr);
-				if (jsonObject.has("openid")) {
-					openid = jsonObject.getString("openid");
-					setIsSuccessful(true);
-				}
-				if (jsonObject.has("nickname")) {
-					nickname = jsonObject.getString("nickname");
-				}
-				if (jsonObject.has("sex")) {
-					sex = jsonObject.getInt("sex");
-				}
-				if (jsonObject.has("province")) {
-					province = jsonObject.getString("province");
-				}
-				if (jsonObject.has("city")) {
-					city = jsonObject.getString("city");
-				}
-				if (jsonObject.has("country")) {
-					country = jsonObject.getString("country");
-				}
-				if (jsonObject.has("headimgurl")) {
-					headimgurl = jsonObject.getString("headimgurl");
-				}
-				if (jsonObject.has("privilege")) {
-					privilege = jsonObject.getString("privilege");
-				}
-				if (jsonObject.has("unionid")) {
-					unionid = jsonObject.getString("unionid");
-				}
-			} catch (Exception e) {
-				DebugLog.e(TAG, "parse()", e);
-			}
-			
-			return this;
-		}
 
 		@Override
 		public String toString() {

@@ -20,9 +20,8 @@ import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.business.account.RequestModifyUserInfo.What;
 import com.leleliu008.newton.business.account.login.LoginType;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.RoundListView;
 import com.leleliu008.newton.framework.ui.adapter.Item;
 import com.leleliu008.newton.framework.ui.adapter.ItemAdapter;
@@ -87,15 +86,15 @@ public class AccountSettingFragment extends BaseFragment implements OnItemClickL
 			return;
 		}
 		//请求用户信息
-		RequestServerManager.asyncRequest(0, new RequestUserInfo(), new RequestFinishCallback<UserInfo>() {
+		RequestUserInfo.requestUserInfo(new RequestCallback<UserInfo>() {
 			
 			@Override
-			public void onFinish(UserInfo userInfo) {
-				if (userInfo.isSuccessful()) {
+			public void callback(UserInfo userInfo, RequestStatus status) {
+				if (status.getHttpStatusCode() == 200) {
 					postMessage(MSG_REQUEST_USER_INFO_SUCCESS, userInfo);
 				} else {
 					String text = Helper.getResourcesString(getActivity(), R.string.get_account_failure);
-					String discription = userInfo.getDiscription();
+					String discription = status.getHttpDescription();
 					if (!TextUtils.isEmpty(discription)) {
 						text = text + " : " + discription;
 					}
@@ -148,17 +147,17 @@ public class AccountSettingFragment extends BaseFragment implements OnItemClickL
 				@Override
 				public void onSelected(String city) {
 					//请求修改城市
-					RequestServerManager.asyncRequest(0, new RequestModifyUserInfo(What.location, city), new RequestFinishCallback<RequestResult>() {
+					RequestModifyUserInfo.requestModifyUserInfo(What.location, city, new RequestCallback<String>() {
 						
 						@Override
-						public void onFinish(RequestResult result) {
-							if (result.isSuccessful()) {
+						public void callback(String result, RequestStatus status) {
+							if (status.getHttpStatusCode() == 200) {
 								//重新请求用户信息
 								requestUserInfo();
 							} else {
 								String text = Helper.getResourcesString(getActivity(), R.string.modify_city_failure);
 								
-								String discription = result.getDiscription();
+								String discription = status.getHttpDescription();
 								if (!TextUtils.isEmpty(discription)) {
 									text = text + " : " + discription;
 								}

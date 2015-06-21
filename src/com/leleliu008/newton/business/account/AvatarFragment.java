@@ -40,9 +40,8 @@ import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.ThreadPoolManager;
 import com.leleliu008.newton.business.config.SettingConfig;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.dialog.ImageChooseDialog;
 import com.leleliu008.newton.framework.ui.dialog.ImageChooseDialog.OnOpenCameraClick;
 import com.leleliu008.newton.framework.ui.dialog.ImageChooseDialog.OnPickImageClick;
@@ -302,21 +301,21 @@ public class AvatarFragment extends BaseFragment implements OnClickListener {
 							final String base64 = Base64.encodeToString(uploadImageByte, Base64.DEFAULT);
 
 							UserInfo userInfo = UserManager.getInstance().getUserInfo();
-							RequestServerManager.asyncRequest(0, new RequestModifyAvatar(base64, userInfo.getUserName()),
-									new RequestFinishCallback<RequestResult>() {
+							RequestModifyAvatar.requestModifyAvatar(base64, userInfo.getUserName(), new RequestCallback<String>() {
 
-										@Override
-										public void onFinish(RequestResult result) {
-											if (result.isSuccessful()) {
-												postMessage(MSG_UPLOAD_PIC_FINISH, true);
-												postFinish();
+								@Override
+								public void callback(String result,
+										RequestStatus status) {
+									if (status.getHttpStatusCode() == 200) {
+										postMessage(MSG_UPLOAD_PIC_FINISH, true);
+										postFinish();
 
-											} else {
-												postMessage(MSG_UPLOAD_PIC_FINISH, false);
-												postFinish();
-											}
-										}
-									});
+									} else {
+										postMessage(MSG_UPLOAD_PIC_FINISH, false);
+										postFinish();
+									}
+								}
+							});
 						}
 					});
 				}

@@ -11,8 +11,8 @@ import android.text.TextUtils;
 
 import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.base.DebugLog;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -62,9 +62,6 @@ final class SinaWeiboLogin implements ILogin {
 				DebugLog.d(TAG, "onWeiboException() WeiboException = " + e);
 				
 				if (callback != null) {
-					loginResult.setIsSuccessful(false);
-					loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-					loginResult.setDiscription("");
 					loginResult.setLoginType(LoginType.SinaWeibo);
 					callback.onLoginFail(loginResult);
 				}
@@ -87,9 +84,6 @@ final class SinaWeiboLogin implements ILogin {
 							DebugLog.d(TAG, "onWeiboException() WeiboException = " + e);
 							
 							if (callback != null) {
-								loginResult.setIsSuccessful(false);
-								loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-								loginResult.setDiscription("");
 								loginResult.setLoginType(LoginType.SinaWeibo);
 								callback.onLoginFail(loginResult);
 							}
@@ -102,20 +96,15 @@ final class SinaWeiboLogin implements ILogin {
 							
 			                if (user == null) {
 			                	if (callback != null) {
-			                		loginResult.setIsSuccessful(false);
-			    					loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-			    					loginResult.setDiscription("");
 			    					loginResult.setLoginType(LoginType.SinaWeibo);
 			    					callback.onLoginFail(loginResult);
 								}
 			                } else {
-			                	RequestServerManager.asyncRequest(0, new RequestThirdPartLogin(2, "" + uid, values.getString("access_token"), user.gender, user.name, user.avatar_large), new RequestFinishCallback<LoginResult>() {
-									
-									@Override
-									public void onFinish(LoginResult loginResult) {
+			                	RequestThirdPartLogin.requestThirdPartLogin(2, "" + uid, values.getString("access_token"), user.gender, user.name, user.avatar_large, new RequestCallback<LoginResult>() {
+			                		public void callback(LoginResult result, RequestStatus status) {
 										DebugLog.d(TAG, "onFinish() loginResult = " + loginResult);
 										
-										if (loginResult.isSuccessful()) {
+										if (status.getHttpStatusCode() == 200) {
 											isLogined = true;
 											SinaWeiboLogin.this.loginResult = loginResult;
 											
@@ -143,9 +132,6 @@ final class SinaWeiboLogin implements ILogin {
 	                DebugLog.d(TAG, code);
 	                
 	                if (callback != null) {
-	                	loginResult.setIsSuccessful(false);
-						loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-						loginResult.setDiscription("");
 						loginResult.setLoginType(LoginType.SinaWeibo);
 						callback.onLoginFail(loginResult);
 					}

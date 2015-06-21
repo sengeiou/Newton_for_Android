@@ -2,20 +2,13 @@ package com.leleliu008.newton.business.account;
 
 import java.io.Serializable;
 
-import org.json.JSONObject;
-
-import com.leleliu008.newton.base.DebugLog;
-import com.leleliu008.newton.framework.net.RequestResult;
-
 /**
  * 用户信息
  * 
  * @author 792793182@qq.com 2014-11-05
  * 
  */
-public class UserInfo extends RequestResult implements Serializable {
-
-	private static final String TAG = UserInfo.class.getSimpleName();
+public class UserInfo implements Serializable {
 
 	/** 注意：此值不能随意修改 */
 	private static final long serialVersionUID = -810358671966354665L;
@@ -230,44 +223,5 @@ public class UserInfo extends RequestResult implements Serializable {
 				+ nextLevelName + ", nextLevelScore=" + nextLevelScore
 				+ ", signInTime=" + signInTime + ", signOutTime=" + signOutTime
 				+ ", " + super.toString();
-	}
-
-	@Override
-	public UserInfo parse(String jsonStr) {
-		super.parse(jsonStr);
-
-		try {
-			JSONObject jsonObject = new JSONObject(jsonStr);
-
-			userId = jsonObject.getString("personId");
-			userName = jsonObject.getString("userName");
-			nickName = jsonObject.getString("nickName");
-			phoneNum = jsonObject.getString("phone");
-			gender = jsonObject.getInt("gender");
-			email = jsonObject.getString("email");
-			avatar = jsonObject.getString("avatar");
-			city = jsonObject.getString("location");
-
-			JSONObject levelJsonObject = jsonObject.getJSONObject("level");
-			score = levelJsonObject.getInt("score");
-			levelName = levelJsonObject.getString("levelName");
-			nextLevelName = levelJsonObject.getString("next_levelName");
-			nextLevelScore = levelJsonObject.getInt("next_nextLevelScore");
-
-			JSONObject cardInfoJsonObject = jsonObject.getJSONObject("cardInfo");
-			alipayNumber = cardInfoJsonObject.getString("alipayNumber");
-			idCardNumber = cardInfoJsonObject.getString("idCardNumber");
-			if ("null".equals(idCardNumber)) {
-				idCardNumber = "";
-			}
-			realName = cardInfoJsonObject.getString("realName");
-			if ("null".equals(realName)) {
-				realName = "";
-			}
-		} catch (Exception e) {
-			DebugLog.e(TAG, "parse()", e);
-		}
-
-		return this;
 	}
 }

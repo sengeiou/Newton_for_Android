@@ -27,8 +27,8 @@ import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.framework.designpattern.Observable;
 import com.leleliu008.newton.framework.designpattern.Observer;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.push.PushManager;
 import com.leleliu008.newton.framework.push.PushMessage;
 import com.leleliu008.newton.framework.ui.RoundListView;
@@ -171,14 +171,13 @@ public class IndividualCenterFragment extends BaseFragment implements
 			return;
 		}
 		// 请求用户信息
-		RequestServerManager.asyncRequest(0, new RequestUserInfo(),
-				new RequestFinishCallback<UserInfo>() {
-
-					@Override
-					public void onFinish(UserInfo userInfo) {
-						postMessage(MSG_REQUEST_USERINFO_FINISHED, userInfo);
-					}
-				});
+		RequestUserInfo.requestUserInfo(new RequestCallback<UserInfo>() {
+			
+			@Override
+			public void callback(UserInfo userInfo, RequestStatus status) {
+				postMessage(MSG_REQUEST_USERINFO_FINISHED, userInfo);
+			}
+		});
 	}
 
 	@Override
@@ -345,7 +344,7 @@ public class IndividualCenterFragment extends BaseFragment implements
 		switch (msg.what) {
 		case MSG_REQUEST_USERINFO_FINISHED:
 			UserInfo userInfo = (UserInfo) msg.obj;
-			if (userInfo != null && userInfo.isSuccessful()) {
+			if (userInfo != null) {
 				attachUserInfo2View(userInfo);
 			} else {
 				showToast(R.string.net_disconnected);

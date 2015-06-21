@@ -1,6 +1,9 @@
 package com.leleliu008.newton.framework.net;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +11,15 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.FormBodyPart;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.text.TextUtils;
@@ -140,5 +150,103 @@ public final class HTTPUtil {
 		}
 		builder.append('\n');
 		return builder.toString();
+	}
+	
+	/**
+	 * 组装URL
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	public static String getUrl(String url, String... kvs) {
+		return getUrl(url, to(kvs));
+	}
+
+	/**
+	 * 组装URL
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	public static String getUrl(String url, List<BasicNameValuePair> params) {
+		String urlParams = "";
+		if (params != null && !params.isEmpty()) {
+			urlParams = URLEncodedUtils.format(params, "UTF-8");
+		}
+		
+		if (!TextUtils.isEmpty(urlParams)) {
+			url += "?" + urlParams;
+		}
+		
+		return url;
+	}
+	
+	public static List<BasicNameValuePair> to(String... kvs) {
+		if (kvs != null) {
+			int length = kvs.length / 2;
+			if (length > 0) {
+				ArrayList<BasicNameValuePair> nvs = new ArrayList<BasicNameValuePair>(length);
+				for (int i = 0; i < length; i += 2) {
+					//如果Key为空，就跳过
+					if (TextUtils.isEmpty(kvs[i])) {
+						continue;
+					}
+					nvs.add(new BasicNameValuePair(kvs[i], kvs[i + 1]));
+				}
+				
+				return nvs;
+			}
+		}
+		return null;
+	}
+	
+	public static UrlEncodedFormEntity getFormEntity(String... kvs) {
+		List<BasicNameValuePair> nvs = to(kvs);
+		if (nvs != null) {
+			return getFormEntity(nvs);
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取表单实体
+	 * @param params
+	 * @return
+	 */
+	public static UrlEncodedFormEntity getFormEntity(List<BasicNameValuePair> params) {
+		UrlEncodedFormEntity entity = null;
+		try {
+			entity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+		} catch (UnsupportedEncodingException e) {
+			DebugLog.e(TAG, "getFormEntity()", e);
+		}
+		
+		return entity;
+	}
+	
+	/**
+	 * 获取字符串类型的请求体
+	 * @param str
+	 * @param contentType 
+	 * @return
+	 */
+	public static StringEntity getStringEntity(String str, String contentType) {
+		StringEntity stringEntity = null;
+		try {
+			stringEntity = new StringEntity(str, HTTP.UTF_8);
+			stringEntity.setContentType(contentType);
+		} catch (UnsupportedEncodingException e) {
+			DebugLog.e(TAG, "getStringEntity()", e);
+		}
+		return stringEntity;
+	}
+	
+	public static MultipartEntity getMultipartEntity(List<FormBodyPart> formBodyParts) {
+		MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName(HTTP.UTF_8));
+		for (FormBodyPart formBodyPart : formBodyParts) {
+			DebugLog.d(TAG, formBodyPart.getHeader().toString());
+			multipartEntity.addPart(formBodyPart);
+		}
+		return multipartEntity;
 	}
 }

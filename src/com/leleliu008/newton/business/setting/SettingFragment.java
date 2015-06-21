@@ -17,9 +17,12 @@ import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.base.ThreadPoolManager;
-import com.leleliu008.newton.business.update.RequestVersionInfo;
+import com.leleliu008.newton.business.config.UrlConfig;
 import com.leleliu008.newton.business.update.UpdateManager;
 import com.leleliu008.newton.business.update.UpdateResult;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.RoundListView;
 import com.leleliu008.newton.framework.ui.adapter.Item;
 import com.leleliu008.newton.framework.ui.adapter.ItemAdapter;
@@ -82,20 +85,24 @@ public class SettingFragment extends BaseFragment implements OnItemClickListener
 					if (Environment.getInstance().isNetworkAvailable()) {
 						DebugLog.d(TAG, "RequestVersionInfo()");
 						
-						UpdateResult updateResult = new RequestVersionInfo().request();
-						DebugLog.d(TAG, "updateResult = " + updateResult);
-						
-						if (updateResult.isSuccessful()) {
-							versionCodeOnServer = updateResult.getVersionCodeOnServer();
-						} 
-						//等待10秒再去请求
-						else {
-							try {
-								Thread.sleep(10000);
-							} catch (InterruptedException e) {
-								DebugLog.e(TAG, "RequestVersionInfo()", e);
+						HttpClientRequest.get(UrlConfig.UPDATE_VERSION, null, UpdateResult.class, new RequestCallback<UpdateResult>() {
+							
+							@Override
+							public void callback(final UpdateResult updateResult, RequestStatus status) {
+								DebugLog.d(TAG, "updateResult = " + updateResult);
+								
+								if (updateResult.getVersionCodeOnServer() > 0) {
+									versionCodeOnServer = updateResult.getVersionCodeOnServer();
+									// 等待10秒再去请求
+								} else {
+									try {
+										Thread.sleep(10000);
+									} catch (InterruptedException e) {
+										DebugLog.e(TAG, "RequestVersionInfo()", e);
+									}
+								}
 							}
-						}
+						});
 					} else {
 						try {
 							Thread.sleep(10000);

@@ -9,8 +9,8 @@ import android.os.Bundle;
 
 import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.base.DebugLog;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -45,9 +45,6 @@ final class QQLogin implements ILogin {
 				DebugLog.d(TAG, "onError()" + uiError);
 				
 				if (callback != null) {
-					loginResult.setIsSuccessful(false);
-					loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-					loginResult.setDiscription("");
 					loginResult.setLoginType(LoginType.QQ);
 					callback.onLoginFail(loginResult);
 				}
@@ -63,8 +60,6 @@ final class QQLogin implements ILogin {
 					@Override
 					public void onError(UiError uiError) {
 						if (callback != null) {
-							loginResult.setIsSuccessful(false);
-							loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
 							loginResult.setLoginType(LoginType.QQ);
 							callback.onLoginFail(loginResult);
 						}
@@ -84,13 +79,12 @@ final class QQLogin implements ILogin {
 							String nickname = jsonObject3.getString("nickname");
 							String avatar = jsonObject3.getString("figureurl_qq_2");
 							
-							RequestServerManager.asyncRequest(0, new RequestThirdPartLogin(1, openId, accessToken, gender, nickname, avatar), new RequestFinishCallback<LoginResult>() {
+							RequestThirdPartLogin.requestThirdPartLogin(1, openId, accessToken, gender, nickname, avatar, new RequestCallback<LoginResult>() {
 								
-								@Override
-								public void onFinish(LoginResult loginResult) {
+								public void callback(LoginResult result, RequestStatus status) {
 									DebugLog.d(TAG, "onFinish() loginResult = " + loginResult);
 									
-									if (loginResult.isSuccessful()) {
+									if (status.getHttpStatusCode() == 200) {
 										isLogined = true;
 										QQLogin.this.loginResult = loginResult;
 										

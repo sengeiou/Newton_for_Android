@@ -15,8 +15,8 @@ import com.leleliu008.newton.business.account.login.ILogin;
 import com.leleliu008.newton.business.account.login.LoginFactory;
 import com.leleliu008.newton.business.account.login.LoginFragment;
 import com.leleliu008.newton.business.account.login.LoginResult;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.fragment.BaseFragmentActivity;
 import com.leleliu008.newton.framework.ui.fragment.FragmentMediator;
 import com.leleliu008.newton.framework.util.TestSetting;
@@ -92,24 +92,21 @@ public final class UserManager {
 			public void run() {
 				while (TestSetting.TaskTestSettings.RefreshAccesstoken) {
 					final UserInfo userInfo = UserManager.getInstance().userInfo;
-					
-					RequestServerManager.asyncRequest(0,
-							new RequestRefreshToken(),
-							new RequestFinishCallback<LoginResult>() {
+					RequestRefreshToken.requestRefreshToken(new RequestCallback<LoginResult>() {
 
-								@Override
-								public void onFinish(LoginResult result) {
-									if (result.isSuccessful()) {
-										LoginResult loginResult = UserManager.getInstance().getLogin().getLoginResult();
-										loginResult.setAccessToken(result.getAccessToken());
-										loginResult.setRefreshToken(result.getRefreshToken());
-										
-										//如果用户信息存在，就保存到对应的用户目录中
-										if (userInfo != null) {
-											saveLoginResultInCache(userInfo, loginResult);
-										}
-									}
+						@Override
+						public void callback(LoginResult result, RequestStatus status) {
+							if (true) {
+								LoginResult loginResult = UserManager.getInstance().getLogin().getLoginResult();
+								loginResult.setAccessToken(result.getAccessToken());
+								loginResult.setRefreshToken(result.getRefreshToken());
+								
+								//如果用户信息存在，就保存到对应的用户目录中
+								if (userInfo != null) {
+									saveLoginResultInCache(userInfo, loginResult);
 								}
+							}
+						}
 					});
 					
 					// 20分钟刷新一次
@@ -243,26 +240,24 @@ public final class UserManager {
 			return;
 		}
 
-		RequestServerManager.asyncRequest(0, new RequestLogin(userName, password),
-				new RequestFinishCallback<LoginResult>() {
+		RequestLogin.requestLogin(userName, password, new RequestCallback<LoginResult>() {
 
-					@Override
-					public void onFinish(LoginResult loginResult) {
-						// 如果自动登录成功
-						if (loginResult.isSuccessful()) {
-							//请求用户信息
-							RequestServerManager.asyncRequest(0, new RequestUserInfo(), null);
-							
-							//刷新Token
-							if (TestSetting.TaskTestSettings.LonginFirst) {
-								TestSetting.TaskTestSettings.RefreshAccesstoken = true;
-								TestSetting.TaskTestSettings.LonginFirst = false;
-								scheduleGetAccessToken();
-							}
-							TestSetting.TraceSettings.TraceMessageType = TestSetting.TraceSettings.TraceMessageType_LOGIN;
-						}
+			@Override
+			public void callback(LoginResult result, RequestStatus status) {
+				// 如果自动登录成功
+				if (true) {
+					RequestUserInfo.requestUserInfo(null);
+					
+					//刷新Token
+					if (TestSetting.TaskTestSettings.LonginFirst) {
+						TestSetting.TaskTestSettings.RefreshAccesstoken = true;
+						TestSetting.TaskTestSettings.LonginFirst = false;
+						scheduleGetAccessToken();
 					}
-				});
+					TestSetting.TraceSettings.TraceMessageType = TestSetting.TraceSettings.TraceMessageType_LOGIN;
+				}
+			}
+		});
 	}
 	
 	public void setLogin(ILogin login) {

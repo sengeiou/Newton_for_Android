@@ -8,12 +8,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.account.RequestLogin;
 import com.leleliu008.newton.business.account.RequestPostClientInfo;
 import com.leleliu008.newton.business.account.UserManager;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.util.TestSetting;
 
 /**
@@ -34,9 +33,6 @@ final class NewtonLogin implements ILogin {
 	public void login(final Activity activity, Bundle pararms, final LoginCallback callback) {
 		if (pararms == null) {
 			if (callback != null) {
-				loginResult.setIsSuccessful(false);
-				loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-				loginResult.setDiscription("");
 				loginResult.setLoginType(LoginType.Newton);
 				callback.onLoginFail(loginResult);
 			}
@@ -48,27 +44,22 @@ final class NewtonLogin implements ILogin {
 
 		if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
 			if (callback != null) {
-				loginResult.setIsSuccessful(false);
-				loginResult.setErrorCode(LoginErrorCode.LOGIN_FAIL);
-				loginResult.setDiscription("");
 				loginResult.setLoginType(LoginType.Newton);
 				callback.onLoginFail(loginResult);
 			}
 			return;
 		}
-		
-		RequestServerManager.asyncRequest(0, new RequestLogin(userName, password), new RequestFinishCallback<LoginResult>() {
+		RequestLogin.requestLogin(userName, password,  new RequestCallback<LoginResult>() {
 
 			@Override
-			public void onFinish(final LoginResult loginResult) {
-				DebugLog.i(TAG, "loginResult = " + loginResult);
+			public void callback(LoginResult result, final RequestStatus status) {
 
 				new Handler(Looper.getMainLooper()).post(new Runnable() {
 
 					@Override
 					public void run() {
 						// 如果自动登录成功
-						if (loginResult.isSuccessful()) {
+						if (status.getHttpStatusCode() == 200) {
 							NewtonLogin.this.loginResult = loginResult;
 							isLogined = true;
 							
@@ -79,7 +70,7 @@ final class NewtonLogin implements ILogin {
 							}
 							
 							TestSetting.TraceSettings.TraceMessageType = TestSetting.TraceSettings.TraceMessageType_LOGIN;
-							RequestServerManager.asyncRequest(0, new RequestPostClientInfo(), null);
+							RequestPostClientInfo.requestPostClientInfo();
 							
 							if (callback != null) {
 								loginResult.setLoginType(LoginType.Newton);

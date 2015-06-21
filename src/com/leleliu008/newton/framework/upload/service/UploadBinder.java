@@ -14,11 +14,10 @@ import android.text.TextUtils;
 import com.leleliu008.newton.MyApp;
 import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.base.Environment;
-import com.leleliu008.newton.business.account.RequestConfiguration;
 import com.leleliu008.newton.business.config.Configuration;
 import com.leleliu008.newton.framework.data.KV;
-import com.leleliu008.newton.framework.security.SymmetricalEncryption;
 import com.leleliu008.newton.framework.security.Base64;
+import com.leleliu008.newton.framework.security.SymmetricalEncryption;
 import com.leleliu008.newton.framework.security.SymmetricalEncryption.Algorithm;
 import com.leleliu008.newton.framework.storage.AzureStorage;
 import com.leleliu008.newton.framework.upload.UploadData;
@@ -249,20 +248,6 @@ final class UploadBinder extends IUploadManager.Stub {
 		//先查看缓存
 		Configuration configuration = Environment.getInstance().getConfiguration();
 		String azure = configuration.getAzureConf();
-		
-		while (TextUtils.isEmpty(azure)) {
-			//缓存中没有再去请求，直到请求到为止
-			configuration = new RequestConfiguration().request();
-			azure = configuration.getAzureConf();
-			
-			if (TextUtils.isEmpty(azure)) {
-				try {
-					Thread.sleep(30000);
-				} catch (InterruptedException e) {
-					DebugLog.d(TAG, "init()", e);
-				}
-			}
-		}
 		
 		Charset charset = Charset.forName("utf-8");
 		String result = new String(SymmetricalEncryption.decrypt(Algorithm.AES, Base64.decode(azure.getBytes(charset)), MyApp.getApp().a().getBytes(charset)));

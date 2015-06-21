@@ -1,11 +1,5 @@
 package com.leleliu008.newton.business.account.login;
 
-import org.json.JSONObject;
-
-import android.text.TextUtils;
-
-import com.leleliu008.newton.base.DebugLog;
-import com.leleliu008.newton.framework.net.RequestResult;
 
 /**
  * 登录返回的结果
@@ -13,9 +7,7 @@ import com.leleliu008.newton.framework.net.RequestResult;
  * @author 792793182@qq.com 2014-10-8
  * 
  */
-public class LoginResult extends RequestResult {
-
-	private static final String TAG = LoginResult.class.getSimpleName();
+public class LoginResult {
 
 	private LoginType loginType = LoginType.NONE;
 	
@@ -93,37 +85,5 @@ public class LoginResult extends RequestResult {
 				+ ", tokenType=" + tokenType + ", expiresIn=" + expiresIn
 				+ ", userName=" + userName + ", password=" + password + ","
 				+ super.toString();
-	}
-
-	@Override
-	public LoginResult parse(String jsonStr) {
-		super.parse(jsonStr);
-
-		try {
-			JSONObject jsonObject = new JSONObject(jsonStr);
-
-			if (jsonObject.has("access_token")) {
-				accessToken = jsonObject.getString("access_token");
-				if (!TextUtils.isEmpty(accessToken)) {
-					setIsSuccessful(true);
-				}
-			}
-
-			if (jsonObject.has("token_type")) {
-				tokenType = jsonObject.getString("token_type");
-			}
-
-			if (jsonObject.has("expires_in")) {
-				expiresIn = jsonObject.getInt("expires_in");
-			}
-
-			if (jsonObject.has("refresh_token")) {
-				refreshToken = jsonObject.getString("refresh_token");
-			}
-		} catch (Exception e) {
-			DebugLog.e(TAG, "parse()", e);
-		}
-
-		return this;
 	}
 }

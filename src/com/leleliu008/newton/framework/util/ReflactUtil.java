@@ -1,4 +1,4 @@
-package com.leleliu008.newton.framework.net;
+package com.leleliu008.newton.framework.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;

@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import com.leleliu008.newton.base.DebugLog;
 import com.leleliu008.newton.business.account.login.LoginResult;
 import com.leleliu008.newton.business.config.UrlConfig;
-import com.leleliu008.newton.framework.net.RequestPostNameValuePair;
+import com.leleliu008.newton.framework.net.HttpClientRequest;
+import com.leleliu008.newton.framework.net.RequestCallback;
 
 /**
  * 请求更新Token
@@ -16,15 +16,12 @@ import com.leleliu008.newton.framework.net.RequestPostNameValuePair;
  * @author 792793182@qq.com 2014-11-09
  * 
  */
-final class RequestRefreshToken extends RequestPostNameValuePair<LoginResult> {
+final class RequestRefreshToken {
 
 	private static String client_id = "BBCBAF84617E491E9797FA2CC10B31CF";
 	private static String client_secret = "DATATANG-CLIENT01";
 
-	@Override
-	public LoginResult request() {
-		DebugLog.d(getTag(), "request()");
-
+	public static void requestRefreshToken(RequestCallback<LoginResult> callback) {
 		LoginResult loginResult = UserManager.getInstance().getLogin().getLoginResult();
 		String userddirective = loginResult.getRefreshToken();
 
@@ -35,6 +32,6 @@ final class RequestRefreshToken extends RequestPostNameValuePair<LoginResult> {
 		dataList.add(new BasicNameValuePair("client_id", client_id));
 		dataList.add(new BasicNameValuePair("client_secret", client_secret));
 
-		return post(UrlConfig.loginUrl, dataList);
+		HttpClientRequest.postForm(UrlConfig.loginUrl, null, dataList, LoginResult.class, callback);
 	}
 }

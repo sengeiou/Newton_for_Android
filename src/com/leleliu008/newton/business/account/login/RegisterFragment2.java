@@ -19,9 +19,8 @@ import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.Environment;
 import com.leleliu008.newton.business.account.RequestPostClientInfo;
 import com.leleliu008.newton.business.account.RequestRegister;
-import com.leleliu008.newton.framework.net.RequestFinishCallback;
-import com.leleliu008.newton.framework.net.RequestResult;
-import com.leleliu008.newton.framework.net.RequestServerManager;
+import com.leleliu008.newton.framework.net.RequestCallback;
+import com.leleliu008.newton.framework.net.RequestStatus;
 import com.leleliu008.newton.framework.ui.drawable.StateList;
 import com.leleliu008.newton.framework.ui.fragment.BaseFragment;
 import com.leleliu008.newton.framework.util.StringUtil;
@@ -133,13 +132,13 @@ public class RegisterFragment2 extends BaseFragment implements OnClickListener {
 			}
 			
 			//请求注册
-			RequestServerManager.asyncRequest(0, new RequestRegister(phoneNumber, password, "test@datatang.com"), new RequestFinishCallback<RequestResult>() {
+			RequestRegister.requestRegister(phoneNumber, password, "test@datatang.com", new RequestCallback<String>() {
 				
 				@Override
-				public void onFinish(RequestResult result) {
-					if (result.isSuccessful()) {
+				public void callback(String result, RequestStatus status) {
+					if (status.getHttpStatusCode() == 200) {
 						TestSetting.TraceSettings.TraceMessageType = TestSetting.TraceSettings.TraceMessageType_REGISTER;
-						RequestServerManager.asyncRequest(0, new RequestPostClientInfo(), null);
+						RequestPostClientInfo.requestPostClientInfo();
 						
 						//统计分享功能
 						Properties properties = new Properties();
@@ -152,7 +151,7 @@ public class RegisterFragment2 extends BaseFragment implements OnClickListener {
 						postFinish();
 					} else {
 						String text = getResources().getString(R.string.register_fail);
-						String description = result.getDiscription();
+						String description = status.getHttpDescription();
 						if (!TextUtils.isEmpty(description)) {
 							text = text + " : " + description;
 						}
