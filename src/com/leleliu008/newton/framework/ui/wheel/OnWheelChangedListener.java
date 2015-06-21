@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 Yuri Kanivets
+ *  Copyright 2011 Yuri Kanivets
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-package com.leleliu008.newton.framework.ui.datatimepicker;
+package com.leleliu008.newton.framework.ui.wheel;
 
 /**
  * Wheel changed listener interface.
- * <p>The currentItemChanged() method is called whenever current wheel positions is changed:
+ * <p>The onChanged() method is called whenever current wheel positions is changed:
  * <li> New Wheel position is set
  * <li> Wheel view is scrolled
  */

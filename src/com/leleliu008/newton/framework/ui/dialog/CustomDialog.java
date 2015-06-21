@@ -19,7 +19,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 
-import com.leleliu008.newton.R;
 import com.leleliu008.newton.base.DebugLog;
 
 /**
@@ -49,7 +48,7 @@ public class CustomDialog extends Dialog {
 	private Activity activity;
 	
 	public CustomDialog(Activity activity) {
-		this(activity, R.style.CustomAlertDialog);
+		this(activity, android.R.style.Theme_Dialog);
 	}
 	
 	public CustomDialog(Activity activity, int theme) {
@@ -88,6 +87,10 @@ public class CustomDialog extends Dialog {
 		contentView = view;
 	}
 
+	public View getContentView() {
+		return contentView;
+	}
+	
 	/**
 	 * 显示此Dialog
 	 * @param anchorView  参照系，是一个View

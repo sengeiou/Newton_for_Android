@@ -24,8 +24,6 @@ public abstract class ItemAdapter<T extends Item> extends BaseAdapter implements
 	
 	//数据项集合
 	private List<T> mItems;
-	//被观察者
-	private DataObservable mObservable;
 	
 	/**
 	 * 构造方法
@@ -40,6 +38,14 @@ public abstract class ItemAdapter<T extends Item> extends BaseAdapter implements
 		notifyDataSetChanged();
 	}
 
+	public List<T> getmItems() {
+		return mItems;
+	}
+	
+	protected View getConvertView(int layoutId, ViewGroup parent) {
+		return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+	}
+	
 /**-----------------------------------------------------------------*/
 
 	@Override
@@ -56,21 +62,7 @@ public abstract class ItemAdapter<T extends Item> extends BaseAdapter implements
 	public long getItemId(int position) {
 		return mItems == null ? -1 : position;
 	}
-
-/**-----------------------------------------------------------------*/
 	
-	public DataObservable getObservable() {
-		return mObservable;
-	}
-
-	public void setObservable(DataObservable observable) {
-		this.mObservable = observable;
-	}
-	
-	protected View getConvertView(int layoutId, ViewGroup parent) {
-		return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
-	}
-
 /**-----------------------------------------------------------------*/
 	
 	@Override
